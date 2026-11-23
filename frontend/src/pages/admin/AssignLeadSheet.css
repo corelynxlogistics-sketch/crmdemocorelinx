@@ -1,0 +1,511 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap");
+
+/* CORELYNX — ASSIGN LEAD SHEET
+   All selectors are page-scoped. Admin sidebar/header/other pages are untouched. */
+.cl-assign-page {
+  --cl-as-blue: #086bef;
+  --cl-as-blue-dark: #0556d5;
+  --cl-as-ink: #0d1c3e;
+  --cl-as-text: #2f4467;
+  --cl-as-muted: #6e809d;
+  --cl-as-line: #d9e5f7;
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding-bottom: 25px;
+  color: var(--cl-as-ink);
+  font-family: "Inter", sans-serif;
+  animation: cl-as-appear 400ms both;
+}
+
+.cl-assign-page *,
+.cl-assign-page *::before,
+.cl-assign-page *::after {
+  box-sizing: border-box;
+}
+
+.cl-assign-page h1,
+.cl-assign-page h2,
+.cl-assign-page h3,
+.cl-assign-page p { margin: 0; }
+
+/* Intro / heading */
+.cl-assign-intro {
+  position: relative;
+  overflow: hidden;
+  min-height: 156px;
+  padding: 2px 4px 19px;
+}
+
+.cl-assign-intro::before,
+.cl-assign-intro::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  width: 430px;
+  height: 150px;
+  border: 27px solid rgba(68, 142, 245, 0.055);
+  border-radius: 50%;
+  right: -135px;
+  top: -67px;
+  transform: rotate(-17deg);
+  pointer-events: none;
+}
+
+.cl-assign-intro::after {
+  right: 80px;
+  top: -106px;
+  border-color: rgba(41, 132, 250, 0.045);
+  transform: rotate(10deg);
+}
+
+.cl-assign-page .cl-assign-back.ant-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 35px;
+  padding: 0 14px;
+  border: 1px solid #c8d8f4;
+  border-radius: 11px;
+  color: #1a3263;
+  background: rgba(255, 255, 255, 0.87);
+  font: 600 12.5px "Inter", sans-serif;
+  box-shadow: 0 2px 9px rgba(26, 86, 182, 0.05);
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.cl-assign-page .cl-assign-back .anticon {
+  font-size: 14px;
+  color: var(--cl-as-blue);
+}
+
+.cl-assign-page .cl-assign-back.ant-btn:hover {
+  border-color: #91baff;
+  color: var(--cl-as-blue-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 5px 14px rgba(27, 102, 221, 0.1);
+}
+
+.cl-assign-heading {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 17px;
+}
+
+.cl-assign-heading-icon {
+  width: 55px;
+  height: 55px;
+  flex: 0 0 55px;
+  display: grid;
+  place-items: center;
+  color: #0872fa;
+  font-size: 26px;
+  border-radius: 17px;
+  background: linear-gradient(145deg, #d9ecff 6%, #f6faff 100%);
+  border: 1px solid #d3e5fd;
+  box-shadow: 0 8px 18px rgba(58, 123, 227, 0.08);
+}
+
+.cl-assign-heading-copy { position: relative; z-index: 1; min-width: 0; }
+
+.cl-assign-heading h1 {
+  font: 800 clamp(22px, 2.2vw, 29px)/1.19 "DM Sans", sans-serif;
+  letter-spacing: -0.8px;
+  color: #0b1838;
+}
+
+.cl-assign-heading p {
+  margin-top: 5px;
+  color: #617394;
+  font: 400 13.5px/1.55 "Inter", sans-serif;
+}
+
+.cl-assign-truck-watermark {
+  position: absolute;
+  right: 21px;
+  top: -29px;
+  font-size: 112px;
+  color: #99c3fb;
+  opacity: 0.22;
+  pointer-events: none;
+}
+
+/* Two-column layout */
+.cl-assign-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.22fr) minmax(0, 0.83fr);
+  align-items: start;
+  gap: 19px;
+}
+
+.cl-assign-panel {
+  min-width: 0;
+  border: 1px solid rgba(214, 227, 249, 0.98);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.97);
+  box-shadow: 0 9px 29px rgba(30, 73, 137, 0.075), 0 2px 5px rgba(30, 73, 137, 0.035);
+  animation: cl-as-rise 500ms both;
+}
+
+.cl-assign-form-panel { padding: 25px 27px 23px; }
+.cl-assign-aside { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+
+/* Form fields */
+.cl-assign-form.ant-form { font-family: "Inter", sans-serif; }
+.cl-assign-form .ant-form-item { margin-bottom: 18px; }
+.cl-assign-form .ant-form-item-label { padding-bottom: 7px; }
+.cl-assign-form .ant-form-item-label > label {
+  font: 600 12.5px/1.5 "Inter", sans-serif;
+  color: #182747;
+  height: auto;
+}
+.cl-assign-form .ant-form-item-label > label::after { display: none; }
+
+.cl-assign-label { display: inline-flex; align-items: center; gap: 9px; }
+.cl-assign-label > .anticon { color: #47648f; font-size: 16px; }
+.cl-assign-required { color: #ed4444; margin-left: -5px; }
+
+.cl-assign-form .ant-input,
+.cl-assign-form .ant-select-selector {
+  color: #152747;
+  background: #fbfcff !important;
+  border: 1px solid #ccdaef !important;
+  border-radius: 10px !important;
+  font: 400 13px "Inter", sans-serif;
+  box-shadow: 0 2px 4px rgba(26, 80, 147, 0.025);
+  transition: border-color 180ms ease, box-shadow 180ms ease, background 180ms ease;
+}
+
+.cl-assign-form input.ant-input { min-height: 43px; padding: 9px 14px; }
+.cl-assign-form input::placeholder { color: #8d9cb3; }
+.cl-assign-form .ant-select-single.ant-select-lg { height: 43px; }
+.cl-assign-form .ant-select-single.ant-select-lg .ant-select-selector { height: 43px; align-items: center; padding: 0 13px; }
+.cl-assign-form .ant-select-selection-placeholder { color: #8495ae; font: 400 13px "Inter", sans-serif; }
+.cl-assign-form .ant-select-arrow { color: #3b5482; }
+
+.cl-assign-form .ant-input:hover,
+.cl-assign-form .ant-select:hover .ant-select-selector { border-color: #9ebfff !important; }
+.cl-assign-form .ant-input:focus,
+.cl-assign-form .ant-input-focused,
+.cl-assign-form .ant-select-focused .ant-select-selector {
+  border-color: #428df5 !important;
+  box-shadow: 0 0 0 3px rgba(31, 120, 246, 0.09) !important;
+  background: #fff !important;
+}
+.cl-assign-form .ant-form-item-explain-error { font-size: 11.5px; margin-top: 3px; }
+
+/* File upload */
+.cl-assign-form .cl-assign-upload-field { margin-bottom: 14px; }
+.cl-assign-page .cl-assign-dropzone.ant-upload-wrapper .ant-upload-drag {
+  border: 1.5px dashed #95beff;
+  border-radius: 15px;
+  background: linear-gradient(145deg, #f3f8ff 0%, #f9fcff 100%);
+  min-height: 182px;
+  padding: 12px;
+  transition: background 180ms, border-color 180ms, box-shadow 180ms;
+}
+.cl-assign-page .cl-assign-dropzone.ant-upload-wrapper .ant-upload-drag:hover,
+.cl-assign-page .cl-assign-dropzone.ant-upload-wrapper .ant-upload-drag-hover {
+  border-color: #1c79f7;
+  background: #eff7ff;
+  box-shadow: inset 0 0 0 1px rgba(26, 119, 246, 0.07);
+}
+.cl-assign-page .cl-assign-dropzone .ant-upload-btn { padding: 18px 12px !important; }
+.cl-assign-drop-content { display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 10px; }
+
+.cl-assign-file-symbol {
+  position: relative;
+  height: 58px;
+  width: 57px;
+  display: grid;
+  place-items: center;
+  color: #0b72fb;
+  font-size: 43px;
+}
+.cl-assign-file-symbol > span {
+  position: absolute;
+  left: 50%;
+  bottom: 4px;
+  transform: translateX(-50%);
+  font: 800 10px/1 "Inter", sans-serif;
+  background: #0869e9;
+  color: white;
+  padding: 3px 5px;
+  border-radius: 4px;
+  letter-spacing: 0.1px;
+}
+.cl-assign-drop-content > strong { font: 600 13px/1.5 "Inter", sans-serif; color: #122344; text-align: center; }
+.cl-assign-file-format {
+  background: #e8f1ff;
+  color: #4772b8;
+  padding: 5px 11px;
+  border-radius: 30px;
+  font: 500 11px "Inter", sans-serif;
+}
+
+.cl-assign-file-tools {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 8px;
+}
+.cl-assign-file-tools > span { font: 400 11.5px/1.5 "Inter", sans-serif; color: #6c7e9d; }
+.cl-assign-page .cl-assign-sample-link.ant-btn {
+  flex-shrink: 0;
+  padding: 0 2px;
+  height: 27px;
+  font: 600 11.5px "Inter", sans-serif;
+  color: #056bf1;
+}
+.cl-assign-page .cl-assign-sample-link:hover { color: #034da9; }
+.cl-assign-page .cl-assign-dropzone .ant-upload-list-item { border-radius: 8px; font: 500 12px "Inter", sans-serif; }
+
+/* Info notice and form actions */
+.cl-assign-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  border-radius: 12px;
+  background: linear-gradient(110deg, #edf5ff, #e6f0ff);
+  border: 1px solid #d9e9fd;
+  padding: 12px 15px;
+  margin-top: 12px;
+  margin-bottom: 21px;
+}
+.cl-assign-notice-icon { color: #0e79f8; font-size: 18px; margin-top: 2px; }
+.cl-assign-notice strong { display: block; color: #153d7b; font: 700 12px/1.4 "Inter", sans-serif; }
+.cl-assign-notice p { margin-top: 3px; font: 400 11.8px/1.6 "Inter", sans-serif; color: #4f6992; }
+
+.cl-assign-actions { display: flex; align-items: center; justify-content: flex-end; gap: 12px; }
+.cl-assign-page .cl-assign-actions .ant-btn { height: 44px; border-radius: 10px; font: 600 12.5px "Inter", sans-serif; }
+.cl-assign-page .cl-assign-cancel.ant-btn {
+  min-width: 120px;
+  border: 1px solid #cbd9f1;
+  color: #1b2e54;
+  background: #fff;
+}
+.cl-assign-page .cl-assign-cancel.ant-btn:hover { border-color: #8bb5f4; color: #0b63e7; }
+.cl-assign-page .cl-assign-submit.ant-btn {
+  min-width: 179px;
+  padding: 0 19px;
+  color: #fff;
+  border-color: transparent;
+  background: linear-gradient(105deg, #1499f9, #055be8);
+  box-shadow: 0 7px 15px rgba(10, 102, 224, 0.17);
+  transition: transform 180ms, box-shadow 180ms, filter 180ms;
+}
+.cl-assign-page .cl-assign-submit.ant-btn:not(:disabled):hover { filter: brightness(1.05); transform: translateY(-1px); box-shadow: 0 9px 19px rgba(10, 102, 224, 0.24); }
+.cl-assign-page .cl-assign-submit.ant-btn:disabled { opacity: 0.75; }
+
+/* Right information column */
+.cl-assign-distribution {
+  position: relative;
+  overflow: hidden;
+  padding: 25px 23px;
+  border-left: 3px solid #1685fb;
+  min-height: 181px;
+  animation-delay: 80ms;
+}
+.cl-assign-distribution::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  width: 170px;
+  height: 170px;
+  top: -105px;
+  right: -70px;
+  border-radius: 50%;
+  background: #ecf5ff;
+}
+.cl-assign-distribution-head { display: flex; gap: 15px; align-items: flex-start; position: relative; z-index: 1; }
+.cl-assign-feature-icon {
+  flex: 0 0 52px;
+  width: 52px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  border-radius: 13px;
+  font-size: 25px;
+}
+.cl-assign-feature-icon--blue { background: #e4f0ff; color: #1175ef; }
+.cl-assign-feature-icon--green { background: #e4f7ed; color: #0aab55; }
+.cl-assign-feature-icon--purple { background: #f0e7ff; color: #8444e8; }
+.cl-assign-distribution h2 {
+  margin-top: 3px;
+  font: 800 17px/1.3 "DM Sans", sans-serif;
+  letter-spacing: -0.35px;
+  color: #122141;
+}
+.cl-assign-distribution p { margin-top: 10px; font: 400 12.5px/1.85 "Inter", sans-serif; color: #405477; }
+
+.cl-assign-benefits { padding: 4px 21px; animation-delay: 140ms; }
+.cl-assign-benefit { display: flex; gap: 15px; align-items: center; padding: 18px 0; }
+.cl-assign-benefit + .cl-assign-benefit { border-top: 1px solid #dfe8f5; }
+.cl-assign-benefit-copy { min-width: 0; flex: 1; }
+.cl-assign-benefit h3 { font: 700 14px/1.4 "DM Sans", sans-serif; color: #162543; }
+.cl-assign-benefit p { margin-top: 3px; font: 400 12px/1.5 "Inter", sans-serif; color: #647796; }
+.cl-assign-benefit-check { color: #8db8ec; opacity: 0.7; font-size: 14px; }
+.cl-assign-trust {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: center;
+  font: 500 11px/1.5 "Inter", sans-serif;
+  color: #8091ad;
+  padding: 2px 0;
+}
+.cl-assign-trust .anticon { font-size: 15px; }
+
+@keyframes cl-as-appear { from {opacity: 0} to {opacity: 1} }
+@keyframes cl-as-rise { from {opacity: 0; transform: translateY(12px)} to {opacity: 1; transform: translateY(0)} }
+
+@media (max-width: 1200px) {
+  .cl-assign-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 0.84fr); gap: 15px; }
+  .cl-assign-form-panel { padding: 22px; }
+  .cl-assign-distribution { padding: 22px 18px; }
+  .cl-assign-benefits { padding-inline: 17px; }
+  .cl-assign-feature-icon { flex-basis: 46px; width: 46px; height: 46px; font-size: 22px; }
+}
+
+/* This layout is inside an admin sidebar. Stack earlier, before the form gets cramped. */
+@media (max-width: 1050px) {
+  .cl-assign-grid { grid-template-columns: minmax(0, 1fr); }
+  .cl-assign-aside { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .cl-assign-trust { grid-column: 1 / -1; }
+  .cl-assign-distribution { min-height: 100%; }
+  .cl-assign-benefit { gap: 10px; padding: 12px 0; }
+  .cl-assign-benefit h3 { font-size: 12.5px; }
+  .cl-assign-benefit p { font-size: 11.2px; }
+}
+
+@media (max-width: 720px) {
+  .cl-assign-intro { min-height: auto; padding-bottom: 17px; }
+  .cl-assign-heading { gap: 11px; margin-top: 16px; }
+  .cl-assign-heading-icon { width: 46px; height: 46px; flex-basis: 46px; font-size: 22px; border-radius: 13px; }
+  .cl-assign-heading h1 { font-size: 22px; }
+  .cl-assign-heading p { font-size: 12px; }
+  .cl-assign-truck-watermark { display: none; }
+  .cl-assign-aside { display: flex; }
+  .cl-assign-form-panel { padding: 20px 17px; }
+  .cl-assign-distribution { min-height: 0; }
+}
+
+@media (max-width: 480px) {
+  .cl-assign-heading { align-items: flex-start; }
+  .cl-assign-heading h1 { font-size: 20px; }
+  .cl-assign-file-tools { flex-direction: column; align-items: flex-start; gap: 4px; }
+  .cl-assign-actions { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: 9px; }
+  .cl-assign-page .cl-assign-actions .ant-btn { width: 100%; min-width: 0; padding: 0 8px; }
+  .cl-assign-distribution-head { gap: 12px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cl-assign-page,
+  .cl-assign-panel { animation: none !important; }
+  .cl-assign-page *, .cl-assign-page *::before, .cl-assign-page *::after { transition-duration: 0.01ms !important; }
+}
+
+
+
+/* ==========================================
+   CORELYNX — CUSTOM ASSIGN PAGE ICONS
+========================================== */
+
+/* Feature and distribution icons */
+
+.cl-assign-feature-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.cl-assign-custom-icon {
+  width: 38px;
+  height: 38px;
+  object-fit: contain;
+  display: block;
+  flex-shrink: 0;
+
+  animation: clAssignIconFade 0.5s ease both;
+}
+
+/* Main heading */
+
+.cl-assign-heading-icon .cl-assign-custom-icon {
+  width: 42px;
+  height: 42px;
+}
+
+/* CSV upload image */
+
+.cl-assign-file-symbol:has(.cl-assign-upload-image) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cl-assign-upload-image {
+  width: 62px;
+  height: 62px;
+  object-fit: contain;
+  display: block;
+}
+
+/* Hover effect */
+
+.cl-assign-benefit:hover .cl-assign-custom-icon {
+  transform: scale(1.07);
+}
+
+.cl-assign-benefit .cl-assign-custom-icon {
+  transition: transform 0.25s ease;
+}
+
+/* Entrance animation */
+
+@keyframes clAssignIconFade {
+  from {
+    opacity: 0;
+    transform: scale(0.88);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Mobile */
+
+@media (max-width: 768px) {
+  .cl-assign-custom-icon {
+    width: 32px;
+    height: 32px;
+  }
+
+  .cl-assign-heading-icon .cl-assign-custom-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .cl-assign-upload-image {
+    width: 50px;
+    height: 50px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cl-assign-custom-icon {
+    animation: none;
+  }
+
+  .cl-assign-benefit .cl-assign-custom-icon {
+    transition: none;
+  }
+}

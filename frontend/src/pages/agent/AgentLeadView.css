@@ -1,0 +1,378 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap");
+
+/* CORELYNX — AGENT CALLING WORKSPACE V2
+   Scoped page styles: does not alter the existing AgentLayout. */
+.cl-call-page {
+  --cl-call-ink: #101d3c;
+  --cl-call-blue: #086af5;
+  --cl-call-border: #d8e5f8;
+  --cl-call-muted: #607499;
+  width: 100%;
+  min-width: 0;
+  max-width: 1660px;
+  margin: 0 auto;
+  padding-bottom: 20px;
+  color: var(--cl-call-ink);
+  font-family: "Inter", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  animation: cl-call-arrive 430ms ease both;
+}
+.cl-call-page, .cl-call-page * { box-sizing: border-box; }
+.cl-call-page h2, .cl-call-page h3, .cl-call-page p { margin: 0; }
+.cl-call-page button, .cl-call-page input, .cl-call-page textarea { font-family: "Inter", sans-serif; }
+.cl-call-page button:focus-visible { outline: 2px solid #78b3ff; outline-offset: 2px; }
+
+/* Intro bar closely follows the approved screenshot. */
+.cl-call-hero {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: minmax(0, 1.32fr) minmax(280px, .93fr);
+  align-items: center;
+  min-height: 124px;
+  gap: clamp(20px, 3vw, 45px);
+  padding: 19px clamp(19px, 2vw, 28px);
+  border: 1px solid #d5e3f8;
+  border-radius: 18px;
+  background: linear-gradient(109deg, #ffffff 0%, #f6faff 66%, #ecf5ff 100%);
+  box-shadow: 0 6px 16px rgba(30, 69, 130, .07), 0 1px 2px rgba(27, 69, 127, .03);
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+.cl-call-hero::before {
+  content: "";
+  position: absolute;
+  width: 430px; height: 180px;
+  border: 25px solid rgba(68, 155, 255, .07);
+  border-radius: 50%;
+  top: -135px; right: 27%;
+  transform: rotate(-9deg);
+  z-index: -1;
+}
+.cl-call-hero-intro { display: flex; align-items: center; gap: 17px; min-width: 0; }
+.cl-call-iconbox {
+  display: grid;
+  flex: 0 0 54px;
+  width: 54px; height: 54px;
+  place-items: center;
+  border-radius: 15px;
+  background: linear-gradient(135deg, #e9f5ff 0%, #cbe5ff 100%);
+  color: #0869f3;
+  font-size: 25px;
+}
+.cl-call-iconbox--hero { width: 60px; height: 60px; flex-basis: 60px; font-size: 28px; }
+.cl-call-hero-copy { min-width: 0; }
+.cl-call-hero-copy h2 {
+  font: 800 clamp(18px, 1.55vw, 23px)/1.27 "DM Sans", sans-serif;
+  letter-spacing: -.55px;
+  color: #101d3c;
+}
+.cl-call-hero-copy p {
+  margin-top: 6px;
+  max-width: 570px;
+  font-size: 12.5px;
+  line-height: 1.65;
+  color: #566d94;
+}
+.cl-call-hero-selector {
+  position: relative;
+  min-width: 0;
+  padding-left: clamp(22px, 2.6vw, 42px);
+  border-left: 1px solid #d4e1f4;
+}
+.cl-call-hero-selector label { display: block; margin-bottom: 9px; font-size: 12.5px; font-weight: 700; color: #1a2a48; }
+.cl-call-page .cl-call-sheet-select.ant-select { width: 100%; }
+.cl-call-page .cl-call-sheet-select .ant-select-selector {
+  height: 43px !important;
+  border: 1px solid #bdcfe9 !important;
+  border-radius: 10px !important;
+  display: flex;
+  align-items: center;
+  padding-inline: 13px !important;
+  background: #fff !important;
+  color: #1c3157;
+  box-shadow: 0 1px 2px rgba(25, 67, 122, .03) !important;
+  font-size: 13px;
+}
+.cl-call-page .cl-call-sheet-select:hover .ant-select-selector,
+.cl-call-page .cl-call-sheet-select.ant-select-focused .ant-select-selector { border-color: #76aaff !important; }
+.cl-call-hero-under { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 24px; margin-top: 5px; }
+.cl-call-hero-under > span { font-size: 11px; color: #6d7e9d; line-height: 1.3; }
+.cl-call-hero-tools { display: flex; align-items: center; gap: 3px; flex-shrink: 0; }
+.cl-call-hero-tools .ant-btn { color: #4075c4; width: 27px; height: 25px; padding: 0; border-radius: 7px; }
+.cl-call-hero-tools .ant-btn:hover:not(:disabled) { color: #0069f5; background: #e5f1ff; }
+
+/* Three wide KPI cards */
+.cl-call-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 15px; margin-bottom: 20px; }
+.cl-call-stat {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 17px;
+  min-width: 0;
+  min-height: 106px;
+  overflow: hidden;
+  border: 1px solid #d9e5f8;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 6px 15px rgba(33, 75, 135, .07);
+  padding: 18px clamp(14px, 1.8vw, 28px);
+  animation: cl-call-rise 520ms ease both;
+}
+.cl-call-stat:nth-child(2) { animation-delay: 55ms; }
+.cl-call-stat:nth-child(3) { animation-delay: 110ms; }
+.cl-call-stat::after {
+  content: "";
+  position: absolute;
+  bottom: -87px; right: -24px;
+  width: 205px; height: 142px;
+  background: linear-gradient(135deg, rgba(162, 215, 255, .13), rgba(128, 197, 255, .4));
+  transform: rotate(-18deg);
+  border-radius: 60% 20% 0 0;
+  pointer-events: none;
+}
+.cl-call-stat--green .cl-call-iconbox { background: linear-gradient(135deg, #e7faf5, #c8f1e6); color: #0f9c79; }
+.cl-call-stat--purple .cl-call-iconbox { background: linear-gradient(135deg, #f0efff, #dcdfff); color: #3d4cf5; }
+.cl-call-stat-copy { min-width: 0; flex: 1; position: relative; z-index: 1; }
+.cl-call-stat-label { font: 600 13px/1.3 "Inter", sans-serif; color: #203150; }
+.cl-call-stat-value { margin-top: 3px; font: 800 clamp(24px, 2.2vw, 30px)/1.2 "DM Sans", sans-serif; letter-spacing: -.8px; font-variant-numeric: tabular-nums; }
+.cl-call-stat-value small { font-size: 17px; font-weight: 700; color: #283c60; letter-spacing: 0; }
+.cl-call-page .cl-call-progress.ant-progress { display: block; margin: 6px 0 0; line-height: 1; }
+.cl-call-page .cl-call-progress .ant-progress-inner { border-radius: 20px; height: 9px; }
+
+/* Main two panels match the screenshot, including striped information rows. */
+.cl-call-columns { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); align-items: stretch; gap: 17px; }
+.cl-call-panel {
+  min-width: 0;
+  background: #fff;
+  border: 1px solid #d6e4f8;
+  border-radius: 17px;
+  overflow: hidden;
+  box-shadow: 0 8px 21px rgba(25, 61, 114, .08);
+  animation: cl-call-rise 560ms ease both;
+}
+.cl-call-disposition { animation-delay: 75ms; }
+.cl-call-panel-header {
+  min-height: 66px;
+  padding: 10px 16px 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid #dbe7fa;
+  background: linear-gradient(108deg, #fff 11%, #eff7ff 76%, #d5eaff 100%);
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+.cl-call-panel-header::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  right: -20px; bottom: -57px;
+  width: 230px; height: 115px;
+  transform: rotate(-17deg);
+  background: rgba(72, 155, 252, .14);
+  border-radius: 65% 5% 0 0;
+}
+.cl-call-panel-title { display: flex; align-items: center; gap: 11px; flex-wrap: wrap; min-width: 0; }
+.cl-call-panel-title h3 { color: #132241; font: 800 clamp(17px, 1.35vw, 20px)/1.3 "DM Sans", sans-serif; letter-spacing: -.45px; }
+.cl-call-iconbox--small { flex-basis: 42px; width: 42px; height: 42px; border-radius: 12px; font-size: 20px; }
+.cl-call-row-pill { border-radius: 9px; padding: 5px 12px; background: #deedff; color: #0667f5; font: 700 12px/1.4 "Inter",sans-serif; white-space: nowrap; }
+.cl-call-page .cl-call-pin-icon.ant-btn { width: 32px; min-width: 32px; height: 34px; flex: 0 0 32px; color: #216cdb; }
+.cl-call-page .cl-call-pin-icon.ant-btn:hover { background: #dbeaff; }
+.cl-call-data { padding: 9px 16px 19px 20px; }
+.cl-call-data-row {
+  display: grid;
+  grid-template-columns: 24px minmax(95px, 35%) minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  min-height: 31px;
+  padding: 4px 9px;
+  border-radius: 6px;
+}
+.cl-call-data-row:nth-child(even) { background: #edf4ff; }
+.cl-call-data-row:nth-child(odd) { background: #fff; }
+.cl-call-data-icon { color: #0969f5; display: grid; place-items: center; font-size: 16px; }
+.cl-call-data-label { overflow: hidden; text-overflow: ellipsis; color: #1b2b48; font-size: 11.5px; font-weight: 600; }
+.cl-call-data-value { min-width: 0; overflow-wrap: anywhere; font-size: 11.5px; font-weight: 500; color: #183052; }
+.cl-call-data-blank { padding: 30px 15px; text-align: center; color: #71809c; font-size: 13px; }
+
+/* Call Disposition: same vertical structure as reference */
+.cl-call-disposition-inner { padding: 12px 20px 20px; height: calc(100% - 66px); }
+.cl-call-form { display: flex; flex-direction: column; min-height: 100%; }
+.cl-call-page .cl-call-form .ant-form-item { margin-bottom: 14px; }
+.cl-call-page .cl-call-form .ant-form-item-label { padding: 0 0 5px; }
+.cl-call-page .cl-call-form .ant-form-item-label > label { font: 700 12px/1.35 "Inter", sans-serif; color: #182746; }
+.cl-call-page .cl-call-form .ant-select-selector,
+.cl-call-page .cl-call-form .ant-input {
+  border: 1px solid #bfd0e9;
+  border-radius: 9px;
+  background: #fff;
+  box-shadow: none;
+  font-family: "Inter", sans-serif;
+  font-size: 12.5px;
+  color: #183257;
+}
+.cl-call-page .cl-call-form .ant-select-selector { height: 41px; display: flex; align-items: center; padding-inline: 13px; }
+.cl-call-page .cl-call-form .ant-input { padding: 10px 12px; line-height: 1.5; resize: vertical; }
+.cl-call-page .cl-call-form textarea.ant-input { min-height: 81px; }
+.cl-call-page .cl-call-form .ant-select-selector:hover,
+.cl-call-page .cl-call-form .ant-input:hover { border-color: #91baff; }
+.cl-call-page .cl-call-form .ant-select-focused .ant-select-selector,
+.cl-call-page .cl-call-form .ant-input:focus { border-color: #2288ff; box-shadow: 0 0 0 3px rgba(44, 137, 255, .08); }
+.cl-call-page .cl-call-form .ant-input::placeholder { color: #8799b5; }
+.cl-call-contact { overflow: hidden; border-radius: 10px; background: #edf4ff; margin: 5px 0 16px; }
+.cl-call-contact-row { display: flex; align-items: center; gap: 12px; min-height: 40px; padding: 7px 16px; color: #1b2e50; font-size: 12px; }
+.cl-call-contact-row:nth-child(even) { background: #f8fbff; }
+.cl-call-contact-row > .anticon { color: #046cf5; font-size: 17px; flex: 0 0 19px; }
+.cl-call-contact-row > span:not(.anticon) { flex: 1; overflow-wrap: anywhere; min-width: 0; font-weight: 600; }
+.cl-call-contact-row .ant-btn { margin-left: auto; width: 31px; height: 28px; padding: 0; color: #0969ee; border: 1px solid #dbe6f6; background: white; border-radius: 8px; }
+.cl-call-saved { display: flex; align-items: center; gap: 8px; padding: 8px 11px; margin: -2px 0 11px; border-radius: 8px; background: #effdf6; color: #148254; font: 600 11px/1.4 "Inter",sans-serif; }
+.cl-call-actions { margin-top: auto; padding-top: 12px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.cl-call-page .cl-call-save-btn.ant-btn,
+.cl-call-page .cl-call-next-btn.ant-btn {
+  width: 100%; height: 48px; display: inline-flex; align-items: center; justify-content: center; gap: 9px;
+  border-radius: 10px;
+  font-family: "Inter",sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  transition: transform .19s,box-shadow .19s,background .19s,border-color .19s;
+}
+.cl-call-page .cl-call-save-btn.ant-btn { color: #0863e5; border: 1px solid #7dafed; background: linear-gradient(180deg,#f8fbff,#e1efff); }
+.cl-call-page .cl-call-next-btn.ant-btn { color: white; border: 1px solid #0966f1; background: linear-gradient(110deg,#119ef4,#004ce8); box-shadow: 0 6px 14px rgba(18, 96, 224, .16); }
+.cl-call-page .cl-call-actions .ant-btn:not(:disabled):hover { transform: translateY(-2px); box-shadow: 0 7px 17px rgba(30, 99, 217, .16); }
+.cl-call-page .cl-call-next-btn.ant-btn:disabled { background: linear-gradient(110deg,#d4e8ff,#a7c7f8); border-color: #c2d6f5; color: #6383b6; box-shadow: none; }
+
+/* No selected sheet and finished sheet */
+.cl-call-empty { min-height: 370px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 35px 18px; border: 1px solid #d8e5f8; border-radius: 18px; background: #fff; text-align: center; box-shadow: 0 7px 22px rgba(24,65,119,.06); }
+.cl-call-empty-art { width: 74px; height: 74px; display: grid; place-items: center; border-radius: 21px; background: #e5f2ff; color: #086df2; font-size: 32px; margin-bottom: 16px; }
+.cl-call-empty-art--green { background: #e6f9ed; color: #0f9b68; }
+.cl-call-empty h3 { font: 800 21px/1.3 "DM Sans",sans-serif; }
+.cl-call-empty p { color: #657895; font-size: 12.5px; line-height: 1.6; margin: 9px 0 19px; }
+.cl-call-empty--loading { align-items: stretch; text-align: left; }
+
+/* Drawer */
+.cl-call-drawer .ant-drawer-header { border-bottom: 1px solid #e2eafa; }
+.cl-call-drawer-heading { display: inline-flex; align-items: center; gap: 8px; font: 700 15px/1.3 "DM Sans",sans-serif; }
+.cl-call-drawer-item.ant-list-item { padding-block: 8px; }
+.cl-call-drawer-card { width: 100%; padding: 15px; border: 1px solid #d9e7f8; border-radius: 13px; background: #f9fbff; }
+.cl-call-drawer-card strong { display: block; color: #172a4f; font-size: 13px; overflow-wrap: anywhere; }
+.cl-call-drawer-meta { display: block; margin-top: 6px; color: #6e819e; font-size: 11.5px; }
+.cl-call-drawer-meta .anticon { color: #076ef2; margin-right: 5px; }
+.cl-call-drawer-card p { margin: 8px 0; color: #526a91; font-size: 12px; }
+.cl-call-drawer-buttons { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 7px; }
+.cl-call-drawer-buttons .ant-btn { border-radius: 8px; font-size: 12px; }
+
+@keyframes cl-call-arrive { from { opacity: 0; transform: translateY(9px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes cl-call-rise { from { opacity: 0; transform: translateY(11px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Tablet and collapsed-sidebar safety */
+@media (max-width: 1250px) {
+  .cl-call-hero { grid-template-columns: minmax(0, 1.05fr) minmax(265px, .95fr); gap: 16px; }
+  .cl-call-hero-selector { padding-left: 17px; }
+  .cl-call-columns { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .cl-call-data-row { grid-template-columns: 21px minmax(74px, 32%) minmax(0, 1fr); gap: 7px; }
+  .cl-call-disposition-inner { padding-inline: 15px; }
+}
+@media (max-width: 1050px) {
+  .cl-call-hero { grid-template-columns: 1fr; gap: 15px; }
+  .cl-call-hero-selector { border-left: none; border-top: 1px solid #d4e1f4; padding: 12px 0 0; }
+  .cl-call-columns { grid-template-columns: 1fr; }
+  .cl-call-disposition-inner { min-height: 385px; }
+}
+@media (max-width: 680px) {
+  .cl-call-hero { padding: 16px; }
+  .cl-call-hero-intro { gap: 11px; align-items: flex-start; }
+  .cl-call-iconbox--hero { width: 46px; height: 46px; flex-basis: 46px; font-size: 21px; }
+  .cl-call-hero-copy h2 { font-size: 18px; }
+  .cl-call-hero-copy p { font-size: 12px; }
+  .cl-call-stats { grid-template-columns: 1fr; gap: 10px; }
+  .cl-call-stat { min-height: 88px; }
+  .cl-call-data { padding-inline: 10px; }
+  .cl-call-data-row { grid-template-columns: 19px minmax(85px, 36%) minmax(0, 1fr); gap: 6px; }
+  .cl-call-panel-header { padding-inline: 12px; }
+  .cl-call-panel-title h3 { font-size: 17px; }
+  .cl-call-actions { gap: 8px; }
+  .cl-call-page .cl-call-save-btn.ant-btn, .cl-call-page .cl-call-next-btn.ant-btn { font-size: 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cl-call-page, .cl-call-stat, .cl-call-panel { animation: none !important; }
+  .cl-call-page *, .cl-call-page *::before, .cl-call-page *::after { transition: none !important; }
+}
+
+/* ==========================================
+   CORELYNX — CUSTOM AGENT KPI ICONS
+========================================== */
+
+.cl-call-stats .cl-call-iconbox {
+  width: 54px;
+  height: 54px;
+  min-width: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+}
+
+.cl-call-stats .cl-call-custom-icon {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  display: block;
+  flex-shrink: 0;
+}
+
+/* Smooth appearance */
+.cl-call-custom-icon {
+  animation: clCustomIconFade 0.5s ease both;
+}
+
+@keyframes clCustomIconFade {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .cl-call-stats .cl-call-iconbox {
+    width: 46px;
+    height: 46px;
+    min-width: 46px;
+  }
+
+  .cl-call-stats .cl-call-custom-icon {
+    width: 34px;
+    height: 34px;
+  }
+}
+
+/* CoreLynx — Excel Icon Before Queue Heading */
+
+.cl-call-hero-excel-icon {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  display: block;
+}
+
+.cl-call-iconbox--hero:has(.cl-call-hero-excel-icon) {
+  background: #eaf4ff;
+  border-radius: 14px;
+  padding: 8px;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .cl-call-hero-excel-icon {
+    width: 36px;
+    height: 36px;
+  }
+}

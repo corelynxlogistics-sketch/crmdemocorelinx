@@ -1,0 +1,555 @@
+/* CORELYNX — ADMIN LAYOUT V2
+   Uses /public/images/logo.png and /public/images/sidebarbg.png
+   Scoped to AdminLayout; no changes to dashboard or business logic.
+*/
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap");
+
+.cl-admin-shell,
+.cl-admin-shell * { box-sizing: border-box; }
+
+.cl-admin-shell {
+  --cl-sidebar-width: 252px;
+  --cl-ink: #111e38;
+  --cl-blue: #096cf0;
+  --cl-muted: #64748b;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: #f4f8ff;
+  color: var(--cl-ink);
+  font-family: "DM Sans", Arial, sans-serif;
+  position: relative;
+}
+.cl-admin-shell--collapsed { --cl-sidebar-width: 72px; }
+.cl-admin-shell button { font-family: "DM Sans", Arial, sans-serif; }
+.cl-admin-shell button:focus-visible {
+  outline: 2px solid #75b8ff;
+  outline-offset: 3px;
+}
+
+/* SIDEBAR — your custom image covers the entire sidebar, not a bottom strip. */
+.cl-admin-shell .cl-admin-sidebar.ant-layout-sider {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 110;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  background-color: #071c46;
+  background-image:
+    linear-gradient(180deg,rgba(4,20,54,.16) 0%,rgba(4,23,57,.16) 48%,rgba(5,22,50,.04) 82%,rgba(3,16,40,.27) 100%),
+    url("/images/sidebarbg.png");
+  background-size: cover;
+  background-position: center bottom;
+  background-repeat: no-repeat;
+  box-shadow: 5px 0 24px rgba(13,43,91,.12);
+  transition: width .32s cubic-bezier(.22,.8,.28,1),
+    min-width .32s cubic-bezier(.22,.8,.28,1),
+    max-width .32s cubic-bezier(.22,.8,.28,1),
+    flex-basis .32s cubic-bezier(.22,.8,.28,1);
+}
+.cl-admin-sidebar .ant-layout-sider-children { height:100%; }
+.cl-admin-sidebar-inner {
+  position: relative;
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Real CoreLynx logo, without re-drawing or duplicating the logo text. */
+.cl-admin-brand-area {
+  flex-shrink: 0;
+  position: relative;
+  padding: 24px 15px 11px;
+  min-height: 118px;
+}
+.cl-admin-brand-card {
+  width: 187px;
+  height: 56px;
+  padding: 4px 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 13px;
+  background: rgba(255,255,255,.97);
+  border: 1px solid rgba(255,255,255,.85);
+  box-shadow: 0 8px 26px rgba(2,14,40,.12);
+  transition: width .26s ease, padding .26s ease, border-radius .26s ease;
+}
+.cl-admin-logo-full {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+}
+.cl-admin-logo-mini {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  font-family: "Fraunces", Georgia, serif;
+  font-weight: 700;
+  font-size: 24px;
+  color: #0769e8;
+}
+.cl-admin-brand-caption {
+  display: block;
+  padding: 8px 5px 0 5px;
+  font-size: 11.5px;
+  line-height: 1.2;
+  letter-spacing: .035em;
+  font-weight: 600;
+  color: rgba(236,246,255,.89);
+  white-space: nowrap;
+}
+.cl-admin-collapse-btn,
+.cl-admin-close-btn {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  right: 13px;
+  top: 34px;
+  width: 29px;
+  height: 29px;
+  border: 1px solid rgba(221,238,255,.36);
+  border-radius: 9px;
+  background: rgba(16,50,104,.32);
+  color: #f1f7ff;
+  cursor: pointer;
+  z-index: 2;
+  transition: background .2s ease, transform .2s ease;
+}
+.cl-admin-collapse-btn:hover,
+.cl-admin-close-btn:hover { background: rgba(255,255,255,.22); transform:translateY(-1px); }
+.cl-admin-close-btn { display:none; font-size:20px; line-height:1; }
+.cl-admin-divider {
+  height:1px;
+  flex-shrink:0;
+  margin: 0 17px 22px;
+  background: rgba(220,236,255,.19);
+}
+.cl-admin-section-title {
+  padding: 0 24px 10px;
+  color: rgba(221,237,255,.60);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .15em;
+  white-space: nowrap;
+}
+.cl-admin-nav {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 0 10px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(210,230,255,.18) transparent;
+}
+.cl-admin-nav-link {
+  display: flex;
+  position: relative;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 44px;
+  padding: 0 13px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: transparent;
+  color: rgba(245,249,255,.91);
+  text-align: left;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background .2s ease, border-color .2s ease,
+    color .2s ease, box-shadow .2s ease;
+}
+.cl-admin-nav-link:hover { background: rgba(255,255,255,.11); color: #fff; }
+.cl-admin-nav-icon {
+  font-size: 18px;
+  width: 20px;
+  flex: 0 0 20px;
+  line-height: 1;
+  text-align: center;
+}
+.cl-admin-nav-text {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  transition: opacity .18s ease;
+}
+.cl-admin-nav-link--active,
+.cl-admin-nav-link--active:hover {
+  background: linear-gradient(110deg, #1e9eff 0%, #046bf4 62%, #0756d6 100%);
+  border-color: rgba(148,204,255,.43);
+  color: #fff;
+  box-shadow: 0 7px 18px rgba(0,32,88,.26), inset 0 1px 0 rgba(255,255,255,.26);
+}
+.cl-admin-sidebar-spacer { flex: 1; min-height: 12px; }
+.cl-admin-sidebar-footer {
+  flex: 0 0 auto;
+  align-self: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 0 11px 16px;
+  padding: 8px 12px;
+  border: 1px solid rgba(198,223,255,.18);
+  background: rgba(8,35,79,.4);
+  backdrop-filter: blur(7px);
+  border-radius: 30px;
+  color: rgba(238,246,255,.82);
+}
+.cl-admin-footer-dot {width:6px;height:6px;flex:0 0 6px;background:#69dabc;border-radius:50%;box-shadow:0 0 0 3px rgba(105,218,188,.13);}
+.cl-admin-footer-label {font-size:9px;font-weight:700;letter-spacing:.105em;white-space:nowrap;}
+
+/* Collapsed desktop sidebar: genuine compact navigation, not squashed text. */
+.cl-admin-shell--collapsed .cl-admin-brand-area { padding: 20px 10px 9px; min-height: 108px; }
+.cl-admin-shell--collapsed .cl-admin-brand-card {width:49px;height:45px;padding:0;border-radius:12px;}
+.cl-admin-shell--collapsed .cl-admin-logo-full {display:none;}
+.cl-admin-shell--collapsed .cl-admin-logo-mini {display:flex;}
+.cl-admin-shell--collapsed .cl-admin-brand-caption,
+.cl-admin-shell--collapsed .cl-admin-section-title,
+.cl-admin-shell--collapsed .cl-admin-nav-text,
+.cl-admin-shell--collapsed .cl-admin-footer-label {display:none;}
+.cl-admin-shell--collapsed .cl-admin-collapse-btn {top:74px;right:22px;width:26px;height:26px;}
+.cl-admin-shell--collapsed .cl-admin-divider {margin:0 13px 19px;}
+.cl-admin-shell--collapsed .cl-admin-nav {padding:0 8px;}
+.cl-admin-shell--collapsed .cl-admin-nav-link {justify-content:center;gap:0;padding:0;min-height:44px;}
+.cl-admin-shell--collapsed .cl-admin-nav-icon {flex-basis:20px;}
+.cl-admin-shell--collapsed .cl-admin-sidebar-footer {padding:9px 12px;}
+
+/* MAIN CONTENT / HEADER. Only shell styles; Outlet children are untouched. */
+.cl-admin-shell .cl-admin-main.ant-layout {
+  margin-left: var(--cl-sidebar-width);
+  min-width: 0;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: #f4f8ff;
+  transition: margin-left .32s cubic-bezier(.22,.8,.28,1);
+}
+.cl-admin-shell .cl-admin-header.ant-layout-header {
+  position: sticky;
+  top: 0;
+  z-index: 75;
+  height: 76px;
+  flex: 0 0 76px;
+  line-height: normal;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 0 clamp(16px, 1.8vw, 27px);
+  background: linear-gradient(110deg, #fff 0%,#f7faff 60%,#edf5ff 100%);
+  border-bottom: 1px solid #e4ecf8;
+  box-shadow: 0 3px 18px rgba(31,74,134,.04);
+}
+.cl-admin-header-left,
+.cl-admin-header-right {display:flex;align-items:center;min-width:0;}
+.cl-admin-header-left {gap:13px;flex:1;}
+.cl-admin-header-right {gap:11px;flex-shrink:0;}
+.cl-admin-header-symbol {
+  display:grid;
+  place-items:center;
+  width:42px;height:42px;flex:0 0 42px;
+  border-radius:12px;
+  background:linear-gradient(135deg,#e8f4ff,#d5e9ff);
+  color:#0876ed;
+  font-size:20px;
+}
+.cl-admin-header-text {min-width:0;}
+.cl-admin-header-title {
+  margin:0;
+  font: 700 21px/1.15 "Fraunces", Georgia, serif;
+  letter-spacing:-.025em;
+  color:#101d3d;
+  white-space:nowrap;
+}
+.cl-admin-header-description {
+  margin:5px 0 0;
+  font:500 12px/1.35 "DM Sans",Arial,sans-serif;
+  color:#60748f;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.cl-admin-profile {
+  display:flex;align-items:center;gap:9px;
+  padding:4px 12px 4px 4px;
+  min-height:46px;
+  max-width:230px;
+  border:1px solid #e0e9f7;
+  border-radius:999px;
+  background:rgba(255,255,255,.98);
+  box-shadow:0 4px 12px rgba(22,60,122,.055);
+  color:#102443;
+  text-align:left;
+  cursor:pointer;
+  transition:box-shadow .2s ease,border-color .2s ease;
+}
+.cl-admin-profile:hover {border-color:#b9d4f9;box-shadow:0 5px 15px rgba(22,60,122,.10);}
+.cl-admin-shell .cl-admin-profile-avatar.ant-avatar {
+  display:grid;place-items:center;
+  flex:0 0 36px;
+  background:linear-gradient(140deg,#199aff,#075ce3);
+  color:#fff;font-size:16px;font-weight:700;
+}
+.cl-admin-profile-copy {display:flex;flex-direction:column;gap:1px;min-width:0;}
+.cl-admin-profile-copy strong {max-width:140px;font-size:12.5px;font-weight:700;line-height:1.2;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
+.cl-admin-profile-copy>span {font-size:10.5px;color:#687d99;line-height:1.25;white-space:nowrap;}
+.cl-admin-profile-arrow {margin-left:5px;font-size:9px;color:#37567e;}
+.cl-admin-shell .cl-admin-logout.ant-btn {
+  height:36px;
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  padding:0 12px;
+  border-radius:9px;
+  font-size:12px;
+  font-weight:700;
+  color:#1559c5;
+  border-color:#bdcff0;
+  background:#fff;
+}
+.cl-admin-shell .cl-admin-logout.ant-btn:hover {color:#0765e6;border-color:#76abf5;background:#f0f7ff;}
+.cl-admin-content.ant-layout-content {
+  min-width:0;
+  padding:clamp(15px,1.7vw,24px);
+  background:linear-gradient(135deg,#f7faff,#f1f6ff);
+}
+.cl-admin-content-inner {width:100%;max-width:1800px;margin:0 auto;min-width:0;}
+.cl-admin-shell .cl-admin-mobile-toggle.ant-btn {display:none;}
+.cl-admin-scrim {display:none;}
+
+@media (max-width:1220px) {
+  .cl-admin-shell .cl-admin-header.ant-layout-header {padding-inline:16px;}
+  .cl-admin-header-description {max-width:340px;}
+  .cl-admin-header-left {gap:10px;}
+  .cl-admin-header-right {gap:8px;}
+  .cl-admin-profile {max-width:170px;}
+  .cl-admin-profile-copy {display:none;}
+  .cl-admin-profile {gap:5px;padding-right:9px;}
+  .cl-admin-profile-arrow {margin-left:2px;}
+}
+
+/* Mobile/tablet off-canvas navigation. */
+@media (max-width:900px) {
+  .cl-admin-shell,
+  .cl-admin-shell--collapsed {--cl-sidebar-width:0px;}
+  .cl-admin-shell .cl-admin-main.ant-layout {margin-left:0!important;}
+  .cl-admin-shell .cl-admin-sidebar.ant-layout-sider {
+    width:252px!important;min-width:252px!important;max-width:252px!important;flex:0 0 252px!important;
+    transform:translateX(-106%);
+    transition:transform .3s cubic-bezier(.22,.8,.28,1);
+    z-index:120;
+  }
+  .cl-admin-shell .cl-admin-sidebar--open.ant-layout-sider {transform:translateX(0);}
+  .cl-admin-scrim {
+    position:fixed;inset:0;z-index:115;
+    display:block;border:0;
+    background:rgba(4,21,49,.43);
+    backdrop-filter:blur(3px);
+    animation:clAdminScrimIn .22s ease-out both;
+  }
+  .cl-admin-shell--collapsed .cl-admin-brand-area {padding:24px 15px 11px;min-height:118px;}
+  .cl-admin-shell--collapsed .cl-admin-brand-card {width:187px;height:56px;padding:4px 13px;border-radius:13px;}
+  .cl-admin-shell--collapsed .cl-admin-logo-full {display:block;}
+  .cl-admin-shell--collapsed .cl-admin-logo-mini {display:none;}
+  .cl-admin-shell--collapsed .cl-admin-brand-caption {display:block;}
+  .cl-admin-shell--collapsed .cl-admin-section-title {display:block;}
+  .cl-admin-shell--collapsed .cl-admin-nav-text {display:block;}
+  .cl-admin-shell--collapsed .cl-admin-footer-label {display:block;}
+  .cl-admin-shell--collapsed .cl-admin-divider {margin:0 17px 22px;}
+  .cl-admin-shell--collapsed .cl-admin-nav {padding:0 10px;}
+  .cl-admin-shell--collapsed .cl-admin-nav-link {justify-content:flex-start;gap:12px;padding:0 13px;}
+  .cl-admin-shell--collapsed .cl-admin-sidebar-footer {padding:8px 12px;}
+  .cl-admin-collapse-btn {display:none;}
+  .cl-admin-close-btn {display:grid;}
+  .cl-admin-shell .cl-admin-mobile-toggle.ant-btn {
+    display:grid;place-items:center;flex:0 0 35px;
+    width:35px;height:35px;border:1px solid #e2ecfa;
+    border-radius:9px;background:#fff;color:#0d6ce7;font-size:16px;
+  }
+  .cl-admin-header-title {font-size:19px;}
+  .cl-admin-header-symbol {width:38px;height:38px;flex-basis:38px;font-size:18px;}
+}
+@media (max-width:600px) {
+  .cl-admin-shell .cl-admin-header.ant-layout-header {height:66px;flex-basis:66px;padding-inline:11px;gap:5px;}
+  .cl-admin-header-symbol {display:none;}
+  .cl-admin-header-left {gap:8px;}
+  .cl-admin-header-title {font-size:17px;letter-spacing:-.025em;}
+  .cl-admin-header-description {display:none;}
+  .cl-admin-header-right {gap:6px;}
+  .cl-admin-shell .cl-admin-profile-avatar.ant-avatar {width:31px!important;height:31px!important;line-height:31px!important;flex-basis:31px;font-size:14px;}
+  .cl-admin-profile {min-height:36px;padding:2px;}
+  .cl-admin-profile-arrow {display:none;}
+  .cl-admin-shell .cl-admin-logout.ant-btn {width:35px;min-width:35px;height:35px;padding:0;font-size:14px;}
+  .cl-admin-logout-text {display:none;}
+  .cl-admin-content.ant-layout-content {padding:13px 11px;}
+}
+@media (max-width:360px) {
+  .cl-admin-header-title {font-size:15.5px;}
+  .cl-admin-shell .cl-admin-header.ant-layout-header {padding-inline:8px;}
+}
+@media (max-height:650px) and (min-width:901px) {
+  .cl-admin-brand-area {min-height:105px;padding-top:13px;}
+  .cl-admin-divider {margin-bottom:12px;}
+  .cl-admin-nav-link {min-height:40px;}
+  .cl-admin-nav {gap:3px;}
+}
+@keyframes clAdminScrimIn {from{opacity:0;}to{opacity:1;}}
+@media (prefers-reduced-motion:reduce) {
+  .cl-admin-shell *, .cl-admin-shell *::before, .cl-admin-shell *::after {
+    transition-duration:0s!important;
+    animation-duration:0s!important;
+    scroll-behavior:auto!important;
+  }
+}
+
+/* ==============================================================
+   CORELYNX — V3: transparent logo + floating edge toggle
+   Desktop: circular control straddles the sidebar/content boundary.
+   Mobile: preserve the existing off-canvas close control.
+============================================================== */
+
+/* Real transparent logo directly over the sidebar artwork */
+.cl-admin-brand-card {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+}
+.cl-admin-logo-full {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  object-fit: contain;
+}
+
+@media (min-width: 901px) {
+  /* Ant Design Sider and its wrappers must not clip the floating button. */
+  .cl-admin-shell .cl-admin-sidebar.ant-layout-sider,
+  .cl-admin-shell .cl-admin-sidebar .ant-layout-sider-children,
+  .cl-admin-shell .cl-admin-sidebar-inner {
+    overflow: visible !important;
+  }
+
+  .cl-admin-shell .cl-admin-brand-area {
+    position: relative;
+  }
+
+  /* right: -16px places the CENTER of a 32px button on the sidebar edge. */
+  .cl-admin-shell .cl-admin-brand-area .cl-admin-collapse-btn,
+  .cl-admin-shell--collapsed .cl-admin-brand-area .cl-admin-collapse-btn {
+    position: absolute;
+    top: 76px;
+    right: -16px;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #d4e2f7;
+    border-radius: 50%;
+    background: #ffffff;
+    color: #096cf0;
+    box-shadow: 0 5px 14px rgba(15,47,93,.17);
+    font-size: 12px;
+    line-height: 1;
+    cursor: pointer;
+    z-index: 130;
+    transition: background .22s ease, color .22s ease,
+      border-color .22s ease, box-shadow .22s ease, transform .22s ease;
+  }
+
+  .cl-admin-shell .cl-admin-brand-area .cl-admin-collapse-btn:hover {
+    background: #096cf0;
+    border-color: #096cf0;
+    color: #fff;
+    transform: scale(1.08);
+    box-shadow: 0 6px 18px rgba(9,108,240,.23);
+  }
+
+  .cl-admin-shell .cl-admin-brand-area .cl-admin-collapse-btn:active {
+    transform: scale(.96);
+  }
+}
+
+
+/* ==========================================
+   CORELYNX — CUSTOM ADMIN HEADER ICON
+========================================== */
+
+.cl-admin-header-symbol {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: linear-gradient(135deg, #eaf4ff, #dcecff);
+  border-radius: 13px;
+  overflow: hidden;
+}
+
+.cl-admin-header-custom-icon {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  display: block;
+
+  animation: clAdminIconFade 0.5s ease both;
+}
+
+@keyframes clAdminIconFade {
+  from {
+    opacity: 0;
+    transform: scale(0.88);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Responsive */
+
+@media (max-width: 900px) {
+  .cl-admin-header-symbol {
+    width: 38px;
+    height: 38px;
+    min-width: 38px;
+  }
+
+  .cl-admin-header-custom-icon {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+@media (max-width: 600px) {
+  .cl-admin-header-symbol {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cl-admin-header-custom-icon {
+    animation: none;
+  }
+}

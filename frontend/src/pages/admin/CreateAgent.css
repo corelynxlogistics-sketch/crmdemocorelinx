@@ -1,0 +1,599 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap");
+
+/* CORELYNX — CREATE AGENT
+   Scoped to this page; the existing sidebar/header remain untouched. */
+.cl-create-agent {
+  --ca-blue: #096af0;
+  --ca-blue-dark: #0755d3;
+  --ca-ink: #0b1734;
+  --ca-text: #2f456c;
+  --ca-muted: #7183a1;
+  --ca-border: #dae6f8;
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 0 0 24px;
+  font-family: "Inter", sans-serif;
+  color: var(--ca-ink);
+  animation: ca-page-enter 420ms ease both;
+}
+
+.cl-create-agent *,
+.cl-create-agent *::before,
+.cl-create-agent *::after {
+  box-sizing: border-box;
+}
+
+.cl-create-agent-top {
+  position: relative;
+  overflow: hidden;
+  padding: 2px 4px 20px;
+  margin-bottom: 3px;
+}
+
+.cl-create-agent-top::before,
+.cl-create-agent-top::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+  border-radius: 50%;
+  border: 30px solid rgba(81, 155, 255, 0.07);
+  width: 460px;
+  height: 230px;
+  right: -118px;
+  top: -111px;
+  transform: rotate(-15deg);
+}
+
+.cl-create-agent-top::after {
+  right: 45px;
+  top: -146px;
+  border-color: rgba(39, 122, 249, 0.06);
+  transform: rotate(13deg);
+}
+
+.cl-create-agent .cl-create-agent-back.ant-btn {
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 0 14px;
+  border-radius: 11px;
+  border: 1px solid #c9d9f4;
+  background: rgba(255, 255, 255, 0.82);
+  box-shadow: 0 3px 9px rgba(24, 90, 185, 0.06);
+  color: #213c73;
+  font: 600 12.5px "Inter", sans-serif;
+  transition: border-color 200ms, background 200ms, box-shadow 200ms, transform 200ms;
+}
+
+.cl-create-agent .cl-create-agent-back.ant-btn .anticon {
+  font-size: 14px;
+  color: #126bf0;
+}
+
+.cl-create-agent .cl-create-agent-back.ant-btn:hover {
+  border-color: #8db9ff;
+  color: #085ace;
+  background: #fff;
+  box-shadow: 0 5px 16px rgba(29, 105, 214, 0.12);
+  transform: translateY(-1px);
+}
+
+.cl-create-agent-heading {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-top: 20px;
+}
+
+.cl-create-agent-heading-icon {
+  width: 54px;
+  height: 54px;
+  flex: 0 0 54px;
+  display: grid;
+  place-items: center;
+  border-radius: 17px;
+  color: #0869f1;
+  font-size: 29px;
+  background: linear-gradient(150deg, rgba(221, 239, 255, 0.94), #fff);
+  border: 1px solid rgba(188, 217, 255, 0.65);
+  box-shadow: 0 8px 20px rgba(46, 118, 225, 0.08);
+}
+
+.cl-create-agent h1,
+.cl-create-agent h2,
+.cl-create-agent h3,
+.cl-create-agent p {
+  margin: 0;
+}
+
+.cl-create-agent-heading h1 {
+  font: 800 clamp(24px, 2.2vw, 30px)/1.18 "DM Sans", sans-serif;
+  letter-spacing: -0.85px;
+  color: #0a1734;
+}
+
+.cl-create-agent-heading p {
+  margin-top: 4px;
+  font: 400 13.5px/1.55 "Inter", sans-serif;
+  color: #637698;
+}
+
+.cl-create-agent-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.03fr) minmax(0, 1fr);
+  gap: 18px;
+  align-items: stretch;
+}
+
+.cl-create-agent-panel {
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid rgba(211, 226, 249, 0.94);
+  border-radius: 19px;
+  box-shadow: 0 9px 27px rgba(18, 65, 137, 0.07), 0 2px 5px rgba(18, 65, 137, 0.03);
+  padding: clamp(20px, 2.1vw, 27px);
+  animation: ca-panel-up 570ms both;
+}
+
+.cl-create-agent-security {
+  animation-delay: 110ms;
+  background: linear-gradient(150deg, #fff 5%, #f6faff 78%, #edf5ff);
+}
+
+.cl-create-agent-security::before {
+  content: "";
+  position: absolute;
+  width: 230px;
+  height: 230px;
+  border-radius: 50%;
+  top: -160px;
+  right: -70px;
+  background: rgba(44, 128, 253, 0.07);
+  pointer-events: none;
+}
+
+.cl-create-agent-section-heading {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 21px;
+}
+
+.cl-create-agent-section-icon {
+  width: 51px;
+  height: 51px;
+  flex: 0 0 51px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  font-size: 24px;
+}
+
+.cl-create-agent-section-icon--blue,
+.cl-create-agent-section-icon--shield {
+  background: linear-gradient(145deg, #e8f4ff, #cee5ff);
+  color: #0872f6;
+  box-shadow: inset 0 0 0 1px rgba(124, 180, 252, 0.11);
+}
+
+.cl-create-agent-section-heading h2,
+.cl-create-agent-security-lead h2 {
+  font: 800 clamp(19px, 1.65vw, 22px)/1.3 "DM Sans", sans-serif;
+  letter-spacing: -0.55px;
+  color: #101b39;
+}
+
+.cl-create-agent-section-heading p {
+  margin-top: 3px;
+  font: 400 12.5px/1.5 "Inter", sans-serif;
+  color: #617595;
+}
+
+.cl-create-agent .cl-create-agent-form .ant-form-item {
+  margin-bottom: 16px;
+}
+
+.cl-create-agent .cl-create-agent-form .ant-form-item-label {
+  padding: 0 0 6px;
+}
+
+.cl-create-agent .cl-create-agent-form .ant-form-item-label > label {
+  color: #152442;
+  height: auto;
+  font: 600 12.5px/1.4 "Inter", sans-serif;
+}
+
+.cl-create-agent .cl-create-agent-form .ant-input-affix-wrapper {
+  width: 100%;
+  min-height: 44px;
+  background: #fbfcff;
+  border: 1px solid #c7d5ee;
+  border-radius: 10px;
+  padding: 0 12px;
+  box-shadow: none;
+  transition: background 180ms, border-color 180ms, box-shadow 180ms;
+}
+
+.cl-create-agent .cl-create-agent-form .ant-input-affix-wrapper:hover {
+  border-color: #8db8fa;
+  background: #fff;
+}
+
+.cl-create-agent .cl-create-agent-form .ant-input-affix-wrapper-focused {
+  border-color: #1677ff;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(22, 119, 255, 0.1);
+}
+
+.cl-create-agent .cl-create-agent-form .ant-input-affix-wrapper .ant-input {
+  background: transparent;
+  color: #142440;
+  font: 400 12.5px "Inter", sans-serif;
+}
+
+.cl-create-agent .cl-create-agent-form .ant-input::placeholder {
+  color: #8c9eb8;
+}
+
+.cl-create-agent .cl-create-agent-form .ant-input-prefix {
+  margin-right: 10px;
+  color: #54739e;
+  font-size: 16px;
+}
+
+.cl-create-agent .cl-create-agent-form .ant-input-suffix {
+  color: #6984aa;
+}
+
+.cl-create-agent .cl-create-agent-form .ant-form-item-explain-error {
+  font: 400 11.5px/1.5 "Inter", sans-serif;
+}
+
+.cl-create-agent-access-note {
+  display: flex;
+  gap: 13px;
+  align-items: flex-start;
+  margin-top: 8px;
+  padding: 15px 16px;
+  background: linear-gradient(107deg, #eaf4ff, #dcecff);
+  border: 1px solid #c6e0ff;
+  border-radius: 12px;
+}
+
+.cl-create-agent-access-note-icon {
+  font-size: 20px;
+  color: #0871f7;
+  margin-top: 2px;
+}
+
+.cl-create-agent-access-note h3 {
+  font: 700 13px/1.45 "DM Sans", sans-serif;
+  color: #10264a;
+}
+
+.cl-create-agent-access-note p {
+  margin-top: 3px;
+  font: 400 12px/1.65 "Inter", sans-serif;
+  color: #38567f;
+}
+
+.cl-create-agent-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 11px;
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid #e6edf9;
+}
+
+.cl-create-agent .cl-create-agent-actions .ant-btn {
+  height: 43px;
+  border-radius: 10px;
+  padding-inline: 23px;
+  font: 600 13px "Inter", sans-serif;
+  transition: transform 200ms, box-shadow 200ms, border-color 200ms, background 200ms;
+}
+
+.cl-create-agent .cl-create-agent-cancel.ant-btn {
+  min-width: 116px;
+  background: #fff;
+  color: #29416d;
+  border: 1px solid #c9d8f0;
+}
+
+.cl-create-agent .cl-create-agent-cancel.ant-btn:hover:not(:disabled) {
+  color: #096af0;
+  border-color: #82b3f8;
+  background: #f6faff;
+}
+
+.cl-create-agent .cl-create-agent-submit.ant-btn {
+  min-width: 166px;
+  background: linear-gradient(112deg, #1ca7ff, #076cef 65%, #064fd2);
+  border: 0;
+  color: white;
+  box-shadow: 0 6px 15px rgba(10, 108, 233, 0.18);
+}
+
+.cl-create-agent .cl-create-agent-submit.ant-btn:hover:not(:disabled) {
+  color: white;
+  transform: translateY(-1px);
+  background: linear-gradient(112deg, #219fff, #075bd7);
+  box-shadow: 0 9px 20px rgba(10, 108, 233, 0.23);
+}
+
+.cl-create-agent-security-lead {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  position: relative;
+}
+
+.cl-create-agent-security-description {
+  margin-top: 14px !important;
+  max-width: 540px;
+  color: #344e75;
+  font: 400 13px/1.7 "Inter", sans-serif;
+}
+
+.cl-create-agent-feature-list {
+  display: grid;
+  gap: 13px;
+  margin-top: 25px;
+}
+
+.cl-create-agent-feature {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 15px 16px;
+  min-height: 83px;
+  border: 1px solid #d9e7f9;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 5px 12px rgba(29, 89, 166, 0.06);
+  border-radius: 14px;
+  transition: transform 230ms, box-shadow 230ms, border-color 230ms;
+}
+
+.cl-create-agent-feature:hover {
+  transform: translateY(-2px);
+  border-color: #b9d6ff;
+  box-shadow: 0 9px 19px rgba(29, 89, 166, 0.1);
+}
+
+.cl-create-agent-feature-icon {
+  flex: 0 0 48px;
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: linear-gradient(142deg, #eaf5ff, #d4eaff);
+  color: #0873fa;
+  font-size: 23px;
+}
+
+.cl-create-agent-feature--assignment .cl-create-agent-feature-icon {
+  background: linear-gradient(142deg, #e6f1ff, #d4e8ff);
+  color: #1681f7;
+}
+
+.cl-create-agent-feature--visibility .cl-create-agent-feature-icon {
+  background: linear-gradient(142deg, #e8f0ff, #d8e4ff);
+  color: #386cf5;
+}
+
+.cl-create-agent-feature-copy {
+  min-width: 0;
+  flex: 1;
+}
+
+.cl-create-agent-feature-copy h3 {
+  color: #142242;
+  font: 700 15px/1.35 "DM Sans", sans-serif;
+  letter-spacing: -0.1px;
+}
+
+.cl-create-agent-feature-copy p {
+  margin-top: 4px;
+  color: #52698c;
+  font: 400 12.5px/1.5 "Inter", sans-serif;
+}
+
+.cl-create-agent-feature-check {
+  flex: 0 0 auto;
+  font-size: 16px;
+  color: #a9c6f0;
+}
+
+.cl-create-agent-security-footer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 19px;
+  padding-top: 15px;
+  border-top: 1px solid #e3edf9;
+  font: 500 11.5px/1.45 "Inter", sans-serif;
+  color: #6d84a6;
+}
+
+.cl-create-agent-security-footer .anticon {
+  color: #398df4;
+}
+
+@keyframes ca-page-enter {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes ca-panel-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 1160px) {
+  .cl-create-agent-grid { grid-template-columns: 1fr 1fr; gap: 14px; }
+  .cl-create-agent-panel { padding: 19px; }
+  .cl-create-agent-feature { padding: 12px; gap: 11px; }
+  .cl-create-agent-feature-copy h3 { font-size: 13.5px; }
+}
+
+@media (max-width: 960px) {
+  .cl-create-agent-grid { grid-template-columns: minmax(0, 1fr); }
+  .cl-create-agent-heading h1 { font-size: 26px; }
+  .cl-create-agent-security { padding-bottom: 20px; }
+  .cl-create-agent-feature-list { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+  .cl-create-agent-feature { align-items: flex-start; flex-direction: column; min-height: 148px; }
+  .cl-create-agent-feature-check { display: none; }
+}
+
+@media (max-width: 650px) {
+  .cl-create-agent { padding-bottom: 16px; }
+  .cl-create-agent-top { padding: 0 0 16px; }
+  .cl-create-agent-heading { gap: 11px; padding-top: 19px; }
+  .cl-create-agent-heading-icon { width: 46px; height: 46px; flex-basis: 46px; font-size: 23px; border-radius: 13px; }
+  .cl-create-agent-heading h1 { font-size: 22px; }
+  .cl-create-agent-heading p { font-size: 12px; }
+  .cl-create-agent-panel { border-radius: 16px; padding: 17px; }
+  .cl-create-agent-section-heading h2,
+  .cl-create-agent-security-lead h2 { font-size: 18px; }
+  .cl-create-agent-section-icon { width: 43px; height: 43px; flex-basis: 43px; font-size: 20px; }
+  .cl-create-agent-feature-list { grid-template-columns: 1fr; }
+  .cl-create-agent-feature { flex-direction: row; align-items: center; min-height: 74px; }
+  .cl-create-agent-actions { gap: 9px; }
+  .cl-create-agent .cl-create-agent-actions .ant-btn { padding-inline: 12px; }
+  .cl-create-agent .cl-create-agent-cancel.ant-btn { min-width: 96px; }
+  .cl-create-agent .cl-create-agent-submit.ant-btn { min-width: 0; flex: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cl-create-agent,
+  .cl-create-agent-panel,
+  .cl-create-agent .ant-btn,
+  .cl-create-agent-feature {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+
+/* ==============================================
+   CORELYNX — PREMIUM CUSTOM CREATE AGENT ICONS
+============================================== */
+
+/* Main heading and section icon containers */
+
+.cl-create-agent-heading-icon,
+.cl-create-agent-section-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+/* Main custom images */
+
+.cl-create-agent-custom-icon {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  display: block;
+  flex-shrink: 0;
+
+  animation: clCreateIconFade 0.5s ease both;
+}
+
+/* Main page heading */
+
+.cl-create-agent-heading-icon .cl-create-agent-custom-icon {
+  width: 44px;
+  height: 44px;
+}
+
+/* Agent Information and Security icons */
+
+.cl-create-agent-section-icon .cl-create-agent-custom-icon {
+  width: 38px;
+  height: 38px;
+}
+
+/* Feature card icon containers */
+
+.cl-create-agent-feature-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+/* Feature images */
+
+.cl-create-agent-feature-image {
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+  display: block;
+  flex-shrink: 0;
+
+  transition: transform 0.3s ease;
+  animation: clCreateIconFade 0.5s ease both;
+}
+
+/* Professional hover effect */
+
+.cl-create-agent-feature:hover
+.cl-create-agent-feature-image {
+  transform: scale(1.08);
+}
+
+/* Smooth fade entrance */
+
+@keyframes clCreateIconFade {
+  from {
+    opacity: 0;
+    transform: scale(0.88);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Tablet and mobile */
+
+@media (max-width: 768px) {
+  .cl-create-agent-heading-icon .cl-create-agent-custom-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .cl-create-agent-section-icon .cl-create-agent-custom-icon {
+    width: 32px;
+    height: 32px;
+  }
+
+  .cl-create-agent-feature-image {
+    width: 35px;
+    height: 35px;
+  }
+}
+
+/* Accessibility */
+
+@media (prefers-reduced-motion: reduce) {
+  .cl-create-agent-custom-icon,
+  .cl-create-agent-feature-image {
+    animation: none;
+    transition: none;
+  }
+}

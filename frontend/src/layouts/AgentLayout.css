@@ -1,0 +1,644 @@
+/* ==========================================================
+   CORELYNX — AGENT WORKSPACE / PREMIUM LAYOUT
+   Scoped to .cl-agent-shell to avoid changing any page UI.
+   Assets: /images/logo.png and /images/sidebarbg.png
+   Fonts: Fraunces (headings), DM Sans (navigation), Inter (data).
+========================================================== */
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap");
+
+.cl-agent-shell,
+.cl-agent-shell * { box-sizing: border-box; }
+
+.cl-agent-shell {
+  --cl-agent-sidebar-width: 252px;
+  --cl-agent-ink: #101d3d;
+  --cl-agent-blue: #096df0;
+  --cl-agent-muted: #60748f;
+  min-height: 100vh;
+  min-height: 100dvh;
+  width: 100%;
+  background: #f4f8ff;
+  color: var(--cl-agent-ink);
+  font-family: "DM Sans", sans-serif;
+  position: relative;
+}
+.cl-agent-shell--collapsed { --cl-agent-sidebar-width: 72px; }
+.cl-agent-shell button { font-family: "DM Sans", sans-serif; }
+.cl-agent-shell button:focus-visible {
+  outline: 2px solid #72b8ff;
+  outline-offset: 3px;
+}
+
+/* SIDEBAR — art covers sidebar from top to bottom */
+.cl-agent-shell .cl-agent-sidebar.ant-layout-sider {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  height: 100vh;
+  height: 100dvh;
+  z-index: 110;
+  overflow: hidden;
+  background-color: #071c46;
+  background-image:
+    linear-gradient(180deg, rgba(4,20,54,.15) 0%, rgba(4,23,57,.14) 53%, rgba(5,22,50,.035) 82%, rgba(3,16,40,.25) 100%),
+    url("/images/sidebarbg.png");
+  background-size: cover;
+  background-position: center bottom;
+  background-repeat: no-repeat;
+  box-shadow: 5px 0 24px rgba(13,43,91,.12);
+  transition: width .32s cubic-bezier(.22,.8,.28,1),
+              min-width .32s cubic-bezier(.22,.8,.28,1),
+              max-width .32s cubic-bezier(.22,.8,.28,1),
+              flex-basis .32s cubic-bezier(.22,.8,.28,1);
+}
+.cl-agent-sidebar .ant-layout-sider-children { height: 100%; }
+.cl-agent-sidebar-inner {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* LOGO — use the exact user's brand asset */
+.cl-agent-brand-area {
+  position: relative;
+  flex: 0 0 auto;
+  min-height: 116px;
+  padding: 22px 15px 10px;
+}
+.cl-agent-brand-card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 187px;
+  height: 56px;
+  padding: 4px 13px;
+  background: rgba(255,255,255,.97);
+  border: 1px solid rgba(255,255,255,.84);
+  border-radius: 13px;
+  overflow: hidden;
+  box-shadow: 0 8px 26px rgba(2,14,40,.12);
+  transition: width .26s ease, padding .26s ease, border-radius .26s ease;
+}
+.cl-agent-logo-full {display: block; height: 100%; width: 100%; object-fit: contain;}
+.cl-agent-logo-mini {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  color: #0769e8;
+  font: 700 24px/1 "Fraunces", Georgia, serif;
+}
+.cl-agent-brand-caption {
+  display: block;
+  padding: 8px 5px 0;
+  font-size: 11.5px;
+  line-height: 1.2;
+  letter-spacing: .035em;
+  font-weight: 600;
+  color: rgba(236,246,255,.89);
+  white-space: nowrap;
+}
+.cl-agent-collapse-btn,
+.cl-agent-close-btn {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  top: 33px;
+  right: 13px;
+  height: 29px;
+  width: 29px;
+  border-radius: 9px;
+  border: 1px solid rgba(221,238,255,.36);
+  background: rgba(16,50,104,.32);
+  color: #f1f7ff;
+  cursor: pointer;
+  z-index: 2;
+  transition: background .2s ease, transform .2s ease;
+}
+.cl-agent-collapse-btn:hover,
+.cl-agent-close-btn:hover {background: rgba(255,255,255,.22);transform: translateY(-1px);}
+.cl-agent-close-btn {display: none; font-size: 20px;}
+.cl-agent-divider {height: 1px; background: rgba(220,236,255,.2); margin: 0 17px 17px; flex: 0 0 1px;}
+
+/* ONLINE — static session-status indicator, NOT navigation */
+.cl-agent-online {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 9px;
+  width: fit-content;
+  min-height: 31px;
+  margin: 0 18px 23px;
+  padding: 6px 13px;
+  background: linear-gradient(120deg,rgba(13,126,84,.9),rgba(21,145,98,.88));
+  border: 1px solid rgba(166,255,215,.15);
+  color: #effff8;
+  border-radius: 100px;
+  font: 600 11.5px/1.3 "DM Sans",sans-serif;
+  box-shadow: 0 5px 18px rgba(0,40,45,.15);
+  white-space: nowrap;
+}
+.cl-agent-online-dot {
+  width: 8px;
+  height: 8px;
+  flex: 0 0 8px;
+  border-radius: 50%;
+  background: #9cf6c9;
+  box-shadow: 0 0 0 4px rgba(156,246,201,.14);
+}
+.cl-agent-section-title {
+  padding: 0 24px 10px;
+  color: rgba(221,237,255,.66);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .15em;
+  white-space: nowrap;
+}
+
+/* NAVIGATION */
+.cl-agent-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 0 10px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(210,230,255,.18) transparent;
+}
+.cl-agent-nav-link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 44px;
+  padding: 0 13px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  color: rgba(245,249,255,.93);
+  font-size: 13px;
+  font-weight: 600;
+  text-align: left;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background .2s ease, border-color .2s ease, color .2s ease, box-shadow .2s ease;
+}
+.cl-agent-nav-link:hover {background: rgba(255,255,255,.11); color: #fff;}
+.cl-agent-nav-icon {font-size: 18px;width: 20px; flex: 0 0 20px; line-height: 1;text-align: center;}
+.cl-agent-nav-text {white-space: nowrap;overflow: hidden;text-overflow: ellipsis;transition: opacity .18s ease;}
+.cl-agent-nav-link--active,
+.cl-agent-nav-link--active:hover {
+  color: #fff;
+  background: linear-gradient(110deg,#1e9eff 0%,#046bf4 62%,#0756d6 100%);
+  border-color: rgba(148,204,255,.43);
+  box-shadow: 0 7px 18px rgba(0,32,88,.26),inset 0 1px 0 rgba(255,255,255,.26);
+}
+.cl-agent-sidebar-spacer {flex: 1; min-height: 12px;}
+.cl-agent-sidebar-footer {
+  flex: 0 0 auto;
+  align-self: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 0 11px 16px;
+  padding: 8px 12px;
+  background: rgba(8,35,79,.42);
+  border: 1px solid rgba(198,223,255,.18);
+  border-radius: 999px;
+  color: rgba(238,246,255,.84);
+  backdrop-filter: blur(7px);
+}
+.cl-agent-footer-mark {font-size: 10px;color: #8dbdff;}
+.cl-agent-footer-label {font-size: 9px;font-weight: 700;letter-spacing: .105em;white-space: nowrap;}
+
+/* COLLAPSED DESKTOP */
+.cl-agent-shell--collapsed .cl-agent-brand-area {padding: 20px 10px 9px;min-height: 108px;}
+.cl-agent-shell--collapsed .cl-agent-brand-card {width: 49px;height: 45px;padding: 0;border-radius: 12px;}
+.cl-agent-shell--collapsed .cl-agent-logo-full {display: none;}
+.cl-agent-shell--collapsed .cl-agent-logo-mini {display: flex;}
+.cl-agent-shell--collapsed .cl-agent-brand-caption,
+.cl-agent-shell--collapsed .cl-agent-section-title,
+.cl-agent-shell--collapsed .cl-agent-nav-text,
+.cl-agent-shell--collapsed .cl-agent-online-label,
+.cl-agent-shell--collapsed .cl-agent-footer-label {display: none;}
+.cl-agent-shell--collapsed .cl-agent-collapse-btn {top: 74px;right: 22px;width: 26px;height: 26px;}
+.cl-agent-shell--collapsed .cl-agent-divider {margin: 0 13px 18px;}
+.cl-agent-shell--collapsed .cl-agent-online {margin: 0 auto 23px;padding: 9px 13px; min-height: 32px;}
+.cl-agent-shell--collapsed .cl-agent-nav {padding: 0 8px;}
+.cl-agent-shell--collapsed .cl-agent-nav-link {justify-content: center;gap: 0;padding: 0;}
+.cl-agent-shell--collapsed .cl-agent-sidebar-footer {padding: 8px 12px;}
+
+/* HEADER AND MAIN — does not restyle pages inside Outlet */
+.cl-agent-shell .cl-agent-main.ant-layout {
+  margin-left: var(--cl-agent-sidebar-width);
+  min-height: 100vh;
+  min-height: 100dvh;
+  min-width: 0;
+  background: #f4f8ff;
+  transition: margin-left .32s cubic-bezier(.22,.8,.28,1);
+}
+.cl-agent-shell .cl-agent-header.ant-layout-header {
+  display: flex;
+  position: sticky;
+  top: 0;
+  z-index: 75;
+  height: 76px;
+  flex: 0 0 76px;
+  line-height: normal;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 0 clamp(16px,1.8vw,27px);
+  background: linear-gradient(110deg,#fff 0%,#f7faff 60%,#edf5ff 100%);
+  border-bottom: 1px solid #e4ecf8;
+  box-shadow: 0 3px 18px rgba(31,74,134,.04);
+}
+.cl-agent-header-left,.cl-agent-header-right {display: flex;align-items: center;min-width: 0;}
+.cl-agent-header-left {gap: 13px;flex: 1;}
+.cl-agent-header-right {gap: 11px;flex: 0 0 auto;}
+.cl-agent-header-symbol {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+  border-radius: 12px;
+  background: linear-gradient(135deg,#e8f4ff,#d5e9ff);
+  color: #0876ed;
+  font-size: 20px;
+}
+.cl-agent-header-copy {min-width: 0;}
+.cl-agent-header-title {
+  margin: 0;
+  font: 700 21px/1.15 "Fraunces", Georgia, serif;
+  letter-spacing: -.025em;
+  color: #101d3d;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.cl-agent-header-subtitle {
+  margin: 5px 0 0;
+  font: 500 12px/1.35 "DM Sans",Arial,sans-serif;
+  color: #60748f;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.cl-agent-profile {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 4px 12px 4px 4px;
+  min-height: 46px;
+  max-width: 235px;
+  border: 1px solid #e0e9f7;
+  border-radius: 999px;
+  background: rgba(255,255,255,.98);
+  box-shadow: 0 4px 12px rgba(22,60,122,.055);
+  color: #102443;
+  text-align: left;
+  cursor: pointer;
+  transition: box-shadow .2s ease,border-color .2s ease;
+}
+.cl-agent-profile:hover {border-color: #b9d4f9;box-shadow: 0 5px 15px rgba(22,60,122,.10);}
+.cl-agent-shell .cl-agent-avatar.ant-avatar {
+  display: grid;
+  place-items: center;
+  flex: 0 0 36px;
+  background: linear-gradient(140deg,#199aff,#075ce3);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+}
+.cl-agent-profile-copy {display: flex;flex-direction: column;gap: 1px;min-width: 0;}
+.cl-agent-profile-copy strong {
+  max-width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 12.5px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+.cl-agent-profile-role {font-size: 10.5px;color: #687d99;line-height: 1.25;white-space: nowrap;}
+.cl-agent-profile-chevron {font-size: 9px;color: #37567e;margin-left: 5px;}
+.cl-agent-shell .cl-agent-logout.ant-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 36px;
+  padding: 0 12px;
+  border-radius: 9px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #1559c5;
+  border-color: #bdcff0;
+  background: #fff;
+}
+.cl-agent-shell .cl-agent-logout.ant-btn:hover {color: #0765e6;border-color: #76abf5;background: #f0f7ff;}
+.cl-agent-content.ant-layout-content {
+  min-width: 0;
+  padding: clamp(15px,1.7vw,24px);
+  background: linear-gradient(135deg,#f7faff,#f1f6ff);
+}
+.cl-agent-content-inner {max-width: 1800px;width: 100%;margin: 0 auto;min-width: 0;}
+.cl-agent-shell .cl-agent-mobile-toggle.ant-btn {display: none;}
+.cl-agent-scrim {display: none;}
+
+/* RESPONSIVE */
+@media (max-width: 1220px) {
+  .cl-agent-shell .cl-agent-header.ant-layout-header {padding-inline: 16px;}
+  .cl-agent-header-subtitle {max-width: 320px;}
+  .cl-agent-header-left {gap: 10px;}
+  .cl-agent-header-right {gap: 8px;}
+  .cl-agent-profile {max-width: 170px;gap: 5px;padding-right: 9px;}
+  .cl-agent-profile-copy {display: none;}
+  .cl-agent-profile-chevron {margin-left: 2px;}
+}
+@media (max-width: 900px) {
+  .cl-agent-shell,.cl-agent-shell--collapsed {--cl-agent-sidebar-width: 0px;}
+  .cl-agent-shell .cl-agent-main.ant-layout {margin-left: 0!important;}
+  .cl-agent-shell .cl-agent-sidebar.ant-layout-sider {
+    width: 252px!important;
+    min-width: 252px!important;
+    max-width: 252px!important;
+    flex: 0 0 252px!important;
+    transform: translateX(-106%);
+    transition: transform .3s cubic-bezier(.22,.8,.28,1);
+    z-index: 120;
+  }
+  .cl-agent-shell .cl-agent-sidebar--open.ant-layout-sider {transform: translateX(0);}
+  .cl-agent-scrim {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 115;
+    border: 0;
+    background: rgba(4,21,49,.43);
+    backdrop-filter: blur(3px);
+    animation: clAgentScrimIn .22s ease-out both;
+  }
+  .cl-agent-shell--collapsed .cl-agent-brand-area {padding: 22px 15px 10px;min-height: 116px;}
+  .cl-agent-shell--collapsed .cl-agent-brand-card {width: 187px;height: 56px;padding: 4px 13px;border-radius: 13px;}
+  .cl-agent-shell--collapsed .cl-agent-logo-full {display: block;}
+  .cl-agent-shell--collapsed .cl-agent-logo-mini {display: none;}
+  .cl-agent-shell--collapsed .cl-agent-brand-caption,
+  .cl-agent-shell--collapsed .cl-agent-section-title,
+  .cl-agent-shell--collapsed .cl-agent-nav-text,
+  .cl-agent-shell--collapsed .cl-agent-online-label,
+  .cl-agent-shell--collapsed .cl-agent-footer-label {display: initial;}
+  .cl-agent-shell--collapsed .cl-agent-online {margin: 0 18px 23px;padding: 6px 13px;}
+  .cl-agent-shell--collapsed .cl-agent-divider {margin: 0 17px 17px;}
+  .cl-agent-shell--collapsed .cl-agent-nav {padding: 0 10px;}
+  .cl-agent-shell--collapsed .cl-agent-nav-link {justify-content: flex-start;gap: 12px;padding: 0 13px;}
+  .cl-agent-shell--collapsed .cl-agent-sidebar-footer {padding: 8px 12px;}
+  .cl-agent-collapse-btn {display: none;}
+  .cl-agent-close-btn {display: grid;}
+  .cl-agent-shell .cl-agent-mobile-toggle.ant-btn {
+    display: grid;
+    place-items: center;
+    flex: 0 0 35px;
+    width: 35px;
+    height: 35px;
+    border: 1px solid #e2ecfa;
+    border-radius: 9px;
+    background: #fff;
+    color: #0d6ce7;
+    font-size: 16px;
+  }
+  .cl-agent-header-symbol {width: 38px;height: 38px;flex-basis: 38px;font-size: 18px;}
+  .cl-agent-header-title {font-size: 19px;}
+}
+@media (max-width: 600px) {
+  .cl-agent-shell .cl-agent-header.ant-layout-header {height: 66px;flex-basis: 66px;padding-inline: 11px;gap: 5px;}
+  .cl-agent-header-symbol {display: none;}
+  .cl-agent-header-left {gap: 8px;}
+  .cl-agent-header-title {font-size: 17px;}
+  .cl-agent-header-subtitle {display: none;}
+  .cl-agent-header-right {gap: 6px;}
+  .cl-agent-shell .cl-agent-avatar.ant-avatar {width: 31px!important;height: 31px!important;line-height: 31px!important;flex-basis: 31px;font-size: 12px;}
+  .cl-agent-profile {min-height: 36px;padding: 2px;}
+  .cl-agent-profile-chevron {display: none;}
+  .cl-agent-shell .cl-agent-logout.ant-btn {width: 35px;min-width: 35px;height: 35px;padding: 0;font-size: 14px;}
+  .cl-agent-logout-label {display: none;}
+  .cl-agent-content.ant-layout-content {padding: 13px 11px;}
+}
+@media (max-width: 360px) {
+  .cl-agent-header-title {font-size: 15px;}
+  .cl-agent-shell .cl-agent-header.ant-layout-header {padding-inline: 8px;}
+}
+@media (max-height: 650px) and (min-width: 901px) {
+  .cl-agent-brand-area {min-height: 105px;padding-top: 13px;}
+  .cl-agent-divider {margin-bottom: 11px;}
+  .cl-agent-nav-link {min-height: 40px;}
+  .cl-agent-nav {gap: 3px;}
+  .cl-agent-online {margin-bottom: 16px;}
+}
+@keyframes clAgentScrimIn {from {opacity:0;}to {opacity:1;}}
+@media (prefers-reduced-motion: reduce) {
+  .cl-agent-shell *, .cl-agent-shell *::before, .cl-agent-shell *::after {
+    transition-duration: 0s!important;
+    animation-duration: 0s!important;
+    scroll-behavior: auto!important;
+  }
+}
+
+
+
+/* ==============================================
+   CORELYNX — AGENT FLOATING SIDEBAR TOGGLE
+   SAME DESIGN AS ADMIN LAYOUT
+============================================== */
+
+@media (min-width: 901px) {
+
+  /* Allow toggle to extend outside sidebar */
+  .cl-agent-shell .cl-agent-sidebar.ant-layout-sider,
+  .cl-agent-shell .cl-agent-sidebar .ant-layout-sider-children,
+  .cl-agent-shell .cl-agent-sidebar-inner {
+    overflow: visible !important;
+  }
+
+  /* Anchor toggle to sidebar edge */
+  .cl-agent-shell .cl-agent-brand-area {
+    position: relative;
+  }
+
+  /* Expanded and collapsed floating toggle */
+  .cl-agent-shell .cl-agent-brand-area .cl-agent-collapse-btn,
+  .cl-agent-shell--collapsed .cl-agent-brand-area .cl-agent-collapse-btn {
+    position: absolute;
+
+    top: 78px;
+    right: -16px;
+
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+    border-radius: 50%;
+
+    background: #ffffff;
+    color: #096cf0;
+
+    border: 1px solid #d9e5f6;
+
+    box-shadow:
+      0 3px 12px rgba(15, 47, 93, 0.16),
+      0 1px 3px rgba(15, 47, 93, 0.08);
+
+    font-size: 12px;
+    cursor: pointer;
+    z-index: 200;
+
+    transition:
+      background 0.25s ease,
+      color 0.25s ease,
+      border-color 0.25s ease,
+      box-shadow 0.25s ease,
+      transform 0.25s ease;
+  }
+
+  /* Premium hover effect */
+  .cl-agent-shell .cl-agent-collapse-btn:hover {
+    background: #096cf0;
+    color: #ffffff;
+    border-color: #096cf0;
+
+    transform: scale(1.08);
+
+    box-shadow:
+      0 5px 16px rgba(9, 108, 240, 0.25);
+  }
+
+  /* Click animation */
+  .cl-agent-shell .cl-agent-collapse-btn:active {
+    transform: scale(0.94);
+  }
+
+  /* Maintain keyboard accessibility */
+  .cl-agent-shell .cl-agent-collapse-btn:focus-visible {
+    outline: 2px solid #75b8ff;
+    outline-offset: 3px;
+  }
+}
+
+/* Respect reduced-motion settings */
+@media (prefers-reduced-motion: reduce) {
+  .cl-agent-shell .cl-agent-collapse-btn {
+    transition: none !important;
+  }
+}
+
+
+/* ==========================================
+   CORELYNX — TRANSPARENT AGENT LOGO
+   Remove white background behind logo
+========================================== */
+
+.cl-agent-shell .cl-agent-brand-card {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+}
+
+/* Remove any styling behind the logo image */
+.cl-agent-shell .cl-agent-logo-full {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  object-fit: contain;
+}
+
+/* Collapsed sidebar — no background box */
+.cl-agent-shell--collapsed .cl-agent-brand-card {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* ==========================================
+   CORELYNX — CUSTOM AGENT HEADER ICON
+========================================== */
+
+.cl-agent-header-symbol {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
+
+  border-radius: 13px;
+  background: linear-gradient(135deg, #eaf4ff, #dcecff);
+
+  overflow: hidden;
+}
+
+.cl-agent-header-custom-icon {
+  display: block;
+
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+
+  animation: clAgentHeaderIconFade 0.5s ease both;
+}
+
+/* Smooth entrance */
+@keyframes clAgentHeaderIconFade {
+  from {
+    opacity: 0;
+    transform: scale(0.88);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Tablet */
+@media (max-width: 900px) {
+  .cl-agent-header-symbol {
+    width: 38px;
+    height: 38px;
+    flex-basis: 38px;
+  }
+
+  .cl-agent-header-custom-icon {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+/* Mobile — preserve existing layout */
+@media (max-width: 600px) {
+  .cl-agent-header-symbol {
+    display: none;
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .cl-agent-header-custom-icon {
+    animation: none;
+  }
+}

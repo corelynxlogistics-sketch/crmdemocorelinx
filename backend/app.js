@@ -9,7 +9,7 @@ import leadSheetRoutes from "./routes/leadSheet.routes.js";
 const app = express();
 
 app.use(cors({
-  origin: ["http://localhost:5173", "http://127.0.0.1:5173","https://sro.corelynxlogistics.com"],
+  origin: ["http://localhost:5173", "http://127.0.0.1:5173","https://sro.corelynxlogistics.com","https://demo.corelinxlogistics.us"],
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],

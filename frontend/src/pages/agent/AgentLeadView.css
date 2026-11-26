@@ -376,3 +376,45 @@
     height: 36px;
   }
 }
+/* =========================================
+   Save Remark and Next — Single Button
+========================================= */
+
+.cl-call-actions .cl-call-save-next-btn {
+  width: 100%;
+  flex: 1 1 100%;
+  grid-column: 1 / -1;
+  min-height: 46px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all 0.2s ease;
+}
+
+.cl-call-actions .cl-call-save-next-btn:not(:disabled) {
+  background: #0969f5;
+  border-color: #0969f5;
+  color: #ffffff;
+}
+
+.cl-call-actions .cl-call-save-next-btn:not(:disabled):hover {
+  background: #0758d4;
+  border-color: #0758d4;
+  color: #ffffff;
+}
+
+.cl-call-actions .cl-call-save-next-btn:disabled {
+  background: #f1f5f9 !important;
+  border-color: #e2e8f0 !important;
+  color: #94a3b8 !important;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.cl-call-save-next-btn .ant-btn-icon {
+  font-size: 16px;
+}

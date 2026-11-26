@@ -26,15 +26,11 @@ import {
   DeleteOutlined,
   DownloadOutlined,
   EnvironmentOutlined,
-  FileTextOutlined,
-  FolderOpenOutlined,
   IdcardOutlined,
-  InfoCircleOutlined,
   MailOutlined,
   MoonOutlined,
   PhoneOutlined,
   PushpinOutlined,
-  SaveOutlined,
   ScheduleOutlined,
   TeamOutlined,
   TruckOutlined,
@@ -91,11 +87,19 @@ export default function AgentLeadView() {
   const [loading, setLoading] = useState(false);
   const [sheetsLoading, setSheetsLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [savedAdvance, setSavedAdvance] = useState(false);
+  const [advancePending, setAdvancePending] = useState(false);
   const [pinLoading, setPinLoading] = useState(false);
   const [downloading, setDownloading] = useState(false);
   const [form] = Form.useForm();
+  const selectedRemark = Form.useWatch("remark", form);
   const fetchSequence = useRef(0);
+  const saveLock = useRef(false);
+  // Set only after the server confirms the save. A failed refresh must
+  // never cause another POST /next for the same lead.
+  const advancePendingRef = useRef(false);
+
+  const hasValidRemark = REMARKS.includes(selectedRemark);
+  const actionBusy = saving || loading || pinLoading;
 
   const fetchSheets = async () => {
     try {
@@ -120,20 +124,25 @@ export default function AgentLeadView() {
   };
 
   const fetchCurrentLead = async (id) => {
-    if (!id) return;
+    if (!id) return false;
     const sequence = ++fetchSequence.current;
     setLoading(true);
     try {
       const res = await API.get(`/lead-sheets/${id}/current`);
-      if (sequence !== fetchSequence.current) return;
+      if (sequence !== fetchSequence.current) return false;
       setLeadData(res.data);
-      setSavedAdvance(false);
       form.resetFields();
+      advancePendingRef.current = false;
+      setAdvancePending(false);
       await fetchPinned(id);
+      return true;
     } catch (error) {
       if (sequence === fetchSequence.current) {
-        message.error(error.response?.data?.message || "Failed to load current lead");
+        if (!advancePendingRef.current) {
+          message.error(error.response?.data?.message || "Failed to load current lead");
+        }
       }
+      return false;
     } finally {
       if (sequence === fetchSequence.current) setLoading(false);
     }
@@ -145,22 +154,24 @@ export default function AgentLeadView() {
   }, []);
 
   const changeSheet = (value) => {
+    if (saveLock.current || actionBusy) return;
+    advancePendingRef.current = false;
     setSheetId(value);
     setLeadData(null);
     setPinnedLeads([]);
     setDrawerOpen(false);
-    setSavedAdvance(false);
+    setAdvancePending(false);
     form.resetFields();
     fetchCurrentLead(value);
   };
 
   const openPinnedLead = async (index) => {
-    if (!sheetId || saving) return;
+    if (!sheetId || actionBusy || saveLock.current || advancePendingRef.current) return;
     try {
       setLoading(true);
       const res = await API.get(`/lead-sheets/${sheetId}/lead/${index}`);
       setLeadData(res.data);
-      setSavedAdvance(false);
+      setAdvancePending(false);
       form.setFieldsValue({
         remark: res.data.savedRemark || undefined,
         note: res.data.savedNote || "",
@@ -174,7 +185,7 @@ export default function AgentLeadView() {
   };
 
   const pinLead = async () => {
-    if (!sheetId || !leadData || savedAdvance) return;
+    if (!sheetId || !leadData || leadData.completed || actionBusy || saveLock.current || advancePendingRef.current) return;
     try {
       setPinLoading(true);
       await API.post(`/lead-sheets/${sheetId}/pin`, {
@@ -191,6 +202,7 @@ export default function AgentLeadView() {
   };
 
   const removePin = async (index) => {
+    if (!sheetId || actionBusy || saveLock.current || advancePendingRef.current) return;
     try {
       await API.delete(`/lead-sheets/${sheetId}/pinned/${index}`);
       message.success("Removed from pinned leads");
@@ -201,60 +213,98 @@ export default function AgentLeadView() {
   };
 
 
-const copyPhone = async (phone, leadIndex) => {
-  if (!phone || phone === "-" || phone === "–") {
-    message.warning("No phone number available");
-    return;
-  }
+  const copyPhone = async (phone, leadIndex) => {
+    if (!phone || phone === "-" || phone === "–") {
+      message.warning("No phone number available");
+      return;
+    }
 
-  // First copy the phone number.
-  try {
-    await navigator.clipboard.writeText(String(phone));
-  } catch {
-    message.error("Unable to copy phone number");
-    return;
-  }
-
-  // Then ask the backend to record the server time.
-  try {
-    await API.post(
-      `/lead-sheets/${sheetId}/phone-copied`,
-      { leadIndex }
-    );
-
-    message.success("Phone copied and timestamp recorded");
-  } catch (error) {
-    message.warning(
-      error.response?.data?.message
-        ? `Phone copied, but timestamp was not saved: ${error.response.data.message}`
-        : "Phone copied, but timestamp could not be recorded"
-    );
-  }
-};
-
-
-  // The existing /next endpoint saves AND advances the server cursor.
-  // To match the reference's two-button design, Save Remark commits once,
-  // and Next Lead then fetches the already-advanced current row.
-  const saveRemark = async (values) => {
-    if (!sheetId || savedAdvance) return;
+    // First copy the phone number.
     try {
-      setSaving(true);
-    await API.post(`/lead-sheets/${sheetId}/next`, {
-  ...values,
-  leadIndex: leadData.currentIndex,
-});
-      setSavedAdvance(true);
-      message.success("Remark saved. Click Next Lead to continue.");
+      await navigator.clipboard.writeText(String(phone));
+    } catch {
+      message.error("Unable to copy phone number");
+      return;
+    }
+
+    // Then ask the backend to record the server time.
+    try {
+      await API.post(
+        `/lead-sheets/${sheetId}/phone-copied`,
+        { leadIndex }
+      );
+
+      message.success("Phone copied and timestamp recorded");
     } catch (error) {
-      message.error(error.response?.data?.message || "Failed to save remark");
+      message.warning(
+        error.response?.data?.message
+          ? `Phone copied, but timestamp was not saved: ${error.response.data.message}`
+          : "Phone copied, but timestamp could not be recorded"
+      );
+    }
+  };
+
+
+  // POST /next saves the disposition AND advances the backend cursor.
+  // GET /current then loads the new lead; it does not advance again.
+  const saveRemarkAndNext = async (values) => {
+    if (
+      !sheetId ||
+      !leadData ||
+      leadData.completed ||
+      actionBusy ||
+      saveLock.current ||
+      advancePendingRef.current ||
+      !REMARKS.includes(values?.remark)
+    ) return;
+
+    saveLock.current = true;
+    setSaving(true);
+
+    try {
+      try {
+        await API.post(`/lead-sheets/${sheetId}/next`, {
+          ...values,
+          leadIndex: leadData.currentIndex,
+        });
+      } catch (error) {
+        // Keep the current lead and form values available on save failure.
+        message.error(error.response?.data?.message || "Failed to save remark");
+        return;
+      }
+
+      advancePendingRef.current = true;
+      setAdvancePending(true);
+
+      const nextLoaded = await fetchCurrentLead(sheetId);
+      if (nextLoaded) {
+        message.success("Remark saved successfully");
+      } else {
+        message.warning("Remark saved, but the next lead could not be loaded. Click Retry Loading Next Lead.");
+      }
     } finally {
+      saveLock.current = false;
       setSaving(false);
     }
   };
 
-  const goToNextLead = () => {
-    if (sheetId && savedAdvance && !loading) fetchCurrentLead(sheetId);
+  // Recovery only: the same button retries GET /current without saving again.
+  const retryNextLead = async () => {
+    if (!sheetId || !advancePendingRef.current || actionBusy || saveLock.current) return;
+
+    saveLock.current = true;
+    setSaving(true);
+    try {
+      const nextLoaded = await fetchCurrentLead(sheetId);
+      if (nextLoaded) {
+        message.success("Lead queue refreshed successfully");
+      } else {
+        message.warning("Unable to load the next lead. Please try again.");
+      }
+    } finally {
+      saveLock.current = false;
+      setSaving(false);
+    }
   };
 
   const downloadCompletedLeads = async () => {
@@ -317,7 +367,7 @@ const copyPhone = async (phone, leadIndex) => {
             value={sheetId || undefined}
             onChange={changeSheet}
             loading={sheetsLoading}
-            disabled={saving}
+            disabled={actionBusy}
             options={sheets.map((sheet) => ({
               label: `${sheet.sheetName} (${sheet.totalLeads || sheet.leads?.length || 0})`,
               value: sheet._id,
@@ -342,7 +392,7 @@ const copyPhone = async (phone, leadIndex) => {
                     type="text"
                     aria-label="Open pinned follow-up leads"
                     icon={<PushpinOutlined />}
-                    disabled={!sheetId}
+                    disabled={!sheetId || actionBusy || advancePending}
                     onClick={() => setDrawerOpen(true)}
                   />
                 </Badge>
@@ -450,7 +500,7 @@ const copyPhone = async (phone, leadIndex) => {
                       type="text"
                       icon={<PushpinOutlined />}
                       loading={pinLoading}
-                      disabled={savedAdvance}
+                      disabled={advancePending || actionBusy}
                       onClick={pinLead}
                       aria-label="Pin current lead"
                     />
@@ -489,7 +539,7 @@ const copyPhone = async (phone, leadIndex) => {
                   form={form}
                   layout="vertical"
                   requiredMark={false}
-                  onFinish={saveRemark}
+                  onFinish={saveRemarkAndNext}
                 >
                   <Form.Item
                     label="Call Remark"
@@ -498,15 +548,16 @@ const copyPhone = async (phone, leadIndex) => {
                   >
                     <Select
                       placeholder="Select call result"
+                      allowClear
                       options={REMARKS.map((item) => ({ label: item, value: item }))}
-                      disabled={savedAdvance || saving}
+                      disabled={advancePending || actionBusy}
                     />
                   </Form.Item>
                   <Form.Item label="Extra Note" name="note">
                     <Input.TextArea
                       placeholder="Add any additional details, follow-up notes, or important information..."
                       rows={3}
-                      disabled={savedAdvance || saving}
+                      disabled={advancePending || actionBusy}
                     />
                   </Form.Item>
                   <div className="cl-call-contact">
@@ -517,7 +568,7 @@ const copyPhone = async (phone, leadIndex) => {
                         <Button
                           size="small"
                           icon={<CopyOutlined />}
-                          disabled={!phoneAvailable}
+                          disabled={!phoneAvailable || actionBusy || advancePending}
                           onClick={() => copyPhone(phone, leadData.currentIndex)}
                           aria-label="Copy phone number"
                         />
@@ -532,31 +583,26 @@ const copyPhone = async (phone, leadIndex) => {
                       <span title={displayValue(address)}>{displayValue(address)}</span>
                     </div>
                   </div>
-                  {savedAdvance && (
+                  {advancePending && !actionBusy && (
                     <div className="cl-call-saved" role="status">
-                      <CheckCircleOutlined /> Remark saved successfully. Select Next Lead to continue.
+                      <CheckCircleOutlined /> Remark saved. Retry loading the next lead.
                     </div>
                   )}
                   <div className="cl-call-actions">
                     <Button
-                      className="cl-call-save-btn"
-                      htmlType="submit"
-                      icon={savedAdvance ? <CheckCircleOutlined /> : <SaveOutlined />}
-                      loading={saving}
-                      disabled={savedAdvance || loading}
-                    >
-                      {savedAdvance ? "Saved" : "Save Remark"}
-                    </Button>
-                    <Button
-                      className="cl-call-next-btn"
+                      className="cl-call-next-btn cl-call-save-next-btn"
                       type="primary"
+                      block
+                      htmlType={advancePending ? "button" : "submit"}
                       icon={<ArrowRightOutlined />}
                       iconPosition="end"
-                      onClick={goToNextLead}
-                      loading={loading}
-                      disabled={!savedAdvance || saving}
+                      onClick={advancePending ? retryNextLead : undefined}
+                      loading={saving || loading}
+                      disabled={actionBusy || (!advancePending && !hasValidRemark)}
                     >
-                      Next Lead
+                      {advancePending && !actionBusy
+                        ? "Retry Loading Next Lead"
+                        : "Save Remark and Next"}
                     </Button>
                   </div>
                 </Form>
@@ -590,9 +636,9 @@ const copyPhone = async (phone, leadIndex) => {
                     <span className="cl-call-drawer-meta"><PhoneOutlined /> {displayValue(number)}</span>
                     {item.reason && <p>{item.reason}</p>}
                     <div className="cl-call-drawer-buttons">
-                      <Button type="primary" onClick={() => openPinnedLead(item.leadIndex)}>Open Lead</Button>
-                      <Button icon={<CopyOutlined />} onClick={() => copyPhone(number, item.leadIndex)}>Copy</Button>
-                      <Button danger icon={<DeleteOutlined />} onClick={() => removePin(item.leadIndex)}>Remove</Button>
+                      <Button type="primary" disabled={actionBusy || advancePending} onClick={() => openPinnedLead(item.leadIndex)}>Open Lead</Button>
+                      <Button icon={<CopyOutlined />} disabled={actionBusy || advancePending} onClick={() => copyPhone(number, item.leadIndex)}>Copy</Button>
+                      <Button danger icon={<DeleteOutlined />} disabled={actionBusy || advancePending} onClick={() => removePin(item.leadIndex)}>Remove</Button>
                     </div>
                   </div>
                 </List.Item>

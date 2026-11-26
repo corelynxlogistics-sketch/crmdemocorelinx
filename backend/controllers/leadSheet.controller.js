@@ -148,17 +148,26 @@ export const getCurrentLead = async (req, res) => {
    Records first successful copy per lead
 ========================================== */
 
+
+/* ==========================================
+   CORELYNX — RECORD PHONE COPY TIMESTAMP
+   Supports multiple CSV phone column names
+   Preserves first successful copy timestamp
+========================================== */
+
 export const recordPhoneCopy = async (req, res) => {
   try {
     const { sheetId } = req.params;
     const { leadIndex } = req.body;
 
+    // 1. Validate the lead index
     if (!Number.isInteger(leadIndex) || leadIndex < 0) {
       return res.status(400).json({
         message: "A valid lead index is required",
       });
     }
 
+    // 2. Find the lead sheet
     const sheet = await LeadSheet.findById(sheetId);
 
     if (!sheet) {
@@ -167,19 +176,21 @@ export const recordPhoneCopy = async (req, res) => {
       });
     }
 
-    // Only the assigned agent can record the event.
+    // 3. Verify the assigned agent
     if (String(sheet.assignedTo) !== String(req.user._id)) {
       return res.status(403).json({
         message: "You are not assigned to this lead sheet",
       });
     }
 
+    // 4. Validate the requested lead
     if (leadIndex >= sheet.leads.length) {
       return res.status(404).json({
         message: "Lead not found",
       });
     }
 
+    // 5. Find the agent's progress
     const progress = await LeadProgress.findOne({
       agent: req.user._id,
       leadSheet: sheetId,
@@ -191,10 +202,10 @@ export const recordPhoneCopy = async (req, res) => {
       });
     }
 
-    // Allow current row or a pinned follow-up row.
+    // 6. Allow current lead or pinned follow-up
     const isCurrentLead = progress.currentIndex === leadIndex;
 
-    const isPinnedLead = progress.pinnedLeads.some(
+    const isPinnedLead = (progress.pinnedLeads || []).some(
       (item) => item.leadIndex === leadIndex
     );
 
@@ -204,21 +215,71 @@ export const recordPhoneCopy = async (req, res) => {
       });
     }
 
+    // 7. Get original CSV row data
     const lead = sheet.leads[leadIndex];
-    const phone = lead?.rawData?.Phone || lead?.rawData?.phone;
+    const rawData = lead?.rawData || {};
 
-    if (!phone || !String(phone).trim()) {
+    // 8. Recognize different phone column headings
+    const supportedPhoneHeaders = [
+      "phone",
+      "phonenumber",
+      "phoneno",
+      "phone1",
+      "phone2",
+      "contact",
+      "contactnumber",
+      "contactno",
+      "contactphone",
+      "carrierphone",
+      "carrierphonenumber",
+      "mobile",
+      "mobilenumber",
+      "mobileno",
+      "cell",
+      "cellphone",
+      "telephone",
+      "tel",
+    ];
+
+    const normalizeHeader = (key) =>
+      String(key).toLowerCase().replace(/[^a-z0-9]/g, "");
+
+    let phone = null;
+
+    // 9. Find the first valid phone field
+    for (const header of supportedPhoneHeaders) {
+      const match = Object.entries(rawData).find(([key, value]) => {
+        const normalizedKey = normalizeHeader(key);
+        const digits = String(value ?? "").replace(/\D/g, "");
+
+        return (
+          normalizedKey === header &&
+          digits.length >= 7 &&
+          digits.length <= 15
+        );
+      });
+
+      if (match) {
+        phone = String(match[1]).trim();
+        break;
+      }
+    }
+
+    // 10. Reject only if no valid phone number exists
+    if (!phone) {
       return res.status(400).json({
-        message: "This lead has no phone number",
+        message: "This lead has no valid phone number",
       });
     }
 
-    // Atomic operation prevents duplicate timestamps
-    // and preserves the first recorded copy time.
+    // 11. Save first phone-copy timestamp atomically.
+    // Repeated copies do not overwrite the original.
     await LeadProgress.updateOne(
       {
         _id: progress._id,
-        "phoneCopyTimestamps.leadIndex": { $ne: leadIndex },
+        "phoneCopyTimestamps.leadIndex": {
+          $ne: leadIndex,
+        },
       },
       {
         $push: {
@@ -230,6 +291,7 @@ export const recordPhoneCopy = async (req, res) => {
       }
     );
 
+    // 12. Retrieve the saved timestamp
     const updatedProgress = await LeadProgress.findById(
       progress._id
     ).select("phoneCopyTimestamps");
@@ -237,15 +299,26 @@ export const recordPhoneCopy = async (req, res) => {
     const record = updatedProgress?.phoneCopyTimestamps?.find(
       (item) => item.leadIndex === leadIndex
     );
+// Confirm the timestamp was actually saved
+if (!record?.copiedAt) {
+  return res.status(500).json({
+    success: false,
+    message: "Phone copy timestamp could not be verified",
+  });
+}
 
-    return res.json({
-      message: "Phone copy timestamp recorded",
-      leadIndex,
-      copiedAt: record?.copiedAt || null,
-    });
+return res.status(200).json({
+  success: true,
+  message: "Phone copy timestamp recorded",
+  leadIndex,
+  copiedAt: record.copiedAt,
+});
   } catch (error) {
+    console.error("Phone copy tracking error:", error);
+
     return res.status(500).json({
-      message: error.message,
+      success: false,
+      message: "Failed to record phone copy timestamp",
     });
   }
 };
